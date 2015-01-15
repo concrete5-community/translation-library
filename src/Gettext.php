@@ -11,6 +11,7 @@ class Gettext
      * @param string $locale The locale identifier
      * @return string
      * @throws \Exception Throws an \Exception if $locale is not a valid locale identifier of if something else goes wrong
+     * @link http://git.savannah.gnu.org/cgit/gettext.git/tree/gettext-tools/src/plural-table.c
      */
     public static function getPluralRule($locale)
     {
