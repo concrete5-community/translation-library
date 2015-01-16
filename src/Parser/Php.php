@@ -15,9 +15,33 @@ class Php extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::parseDo()
+     * @see \C5TL\Parser::canParseDirectory()
      */
-    protected function parseDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    public function canParseDirectory()
+    {
+        return true;
+    }
+
+    /**
+     * @see \C5TL\Parser::canParseRunningConcrete5()
+     */
+    public function canParseRunningConcrete5()
+    {
+        return false;
+    }
+
+    /**
+     * @see \C5TL\Parser::parseRunningConcrete5Do()
+     */
+    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
+    {
+        throw new \Exception('This parser does not support parsing a running concrete5 instance');
+    }
+
+    /**
+     * @see \C5TL\Parser::parseDirectoryDo()
+     */
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $phpFiles = array();
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
@@ -37,9 +61,9 @@ class Php extends \C5TL\Parser
         }
         if (count($phpFiles) > 0) {
             if (\C5TL\Gettext::commandIsAvailable('xgettext')) {
-                $newTranslations = static::parseDo_xgettext($rootDirectory, $phpFiles);
+                $newTranslations = static::parseDirectoryDo_xgettext($rootDirectory, $phpFiles);
             } else {
-                $newTranslations = static::parseDo_php($rootDirectory, $phpFiles);
+                $newTranslations = static::parseDirectoryDo_php($rootDirectory, $phpFiles);
             }
             if ($newTranslations->count() > 0) {
                 if (strlen($relativePath) > 0) {
@@ -76,7 +100,7 @@ class Php extends \C5TL\Parser
      * @throws \Exception Throws an \Exception in case of problems
      * @return \Gettext\Translations
      */
-    protected function parseDo_xgettext($rootDirectory, $phpFiles)
+    protected function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
     {
         $initialDirectory = @getcwd();
         if ($initialDirectory === false) {
@@ -156,7 +180,7 @@ class Php extends \C5TL\Parser
      * @throws \Exception Throws an \Exception in case of problems
      * @return \Gettext\Translations
      */
-    protected function parseDo_php($rootDirectory, $phpFiles)
+    protected function parseDirectoryDo_php($rootDirectory, $phpFiles)
     {
         $prefix = $rootDirectory . '/';
         $originalFunctions = \Gettext\Extractors\PhpCode::$functions;

@@ -18,14 +18,26 @@ abstract class Parser
     abstract public function getParserName();
 
     /**
-     * Extracts translations.
+     * Does this parser can parse directories?
+     * @return bool
+     */
+    abstract public function canParseDirectory();
+
+    /**
+     * Does this parser can parse data from a running concrete5 instance?
+     * @return bool
+     */
+    abstract public function canParseRunningConcrete5();
+
+    /**
+     * Extracts translations from a directory.
      * @param \Gettext\Translations|null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath='' The relative path (translations references will be prepended with this path).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    public function parse($translations, $rootDirectory, $relativePath = '')
+    public function parseDirectory($translations, $rootDirectory, $relativePath = '')
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -41,18 +53,48 @@ abstract class Parser
             throw new \Exception("Directory not readable: $dir");
         }
         $dirRel = is_string($relativePath) ? trim(str_replace(DIRECTORY_SEPARATOR, '/', $relativePath), '/') : '';
-        $this->parseDo($translations, $dir, $dirRel);
+        $this->parseDirectoryDo($translations, $dir, $dirRel);
 
         return $translations;
     }
 
     /**
-     * Final implementation of {@link \C5TL\Parser::parse()}
+     * Final implementation of {@link \C5TL\Parser::parseDirectory()}
      * @param \Gettext\Translations $translations Found translatable strings will be appended here
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      */
-    abstract protected function parseDo(\Gettext\Translations $translations, $rootDirectory, $relativePath);
+    abstract protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath);
+
+    /**
+     * Extracts translations from a running concrete5 instance.
+     * @param \Gettext\Translations|null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
+     * @throws \Exception Throws an \Exception in case of errors.
+     * @return \Gettext\Translations
+     */
+    public function parseRunningConcrete5($translations)
+    {
+        if (!is_object($translations)) {
+            $translations = new \Gettext\Translations();
+        }
+        $runningVersion = '';
+        if (defined('\C5_EXECUTE') && defined('\APP_VERSION') && is_string(\APP_VERSION)) {
+            $runningVersion = \APP_VERSION;
+        }
+        if (!strlen($runningVersion)) {
+            throw new \Exception('Unable to determine the current working directory');
+        }
+        $this->parseRunningConcrete5Do($translations, $runningVersion);
+
+        return $translations;
+    }
+
+    /**
+     * Final implementation of {@link \C5TL\Parser::parseRunningConcrete5()}
+     * @param \Gettext\Translations $translations Found translatable strings will be appended here
+     * @param string $concrete5version The version of the running concrete5 instance.
+     */
+    abstract protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version);
 
     /**
      * Clears the memory cache.
@@ -152,5 +194,15 @@ abstract class Parser
         }
 
         return $result;
+    }
+
+    /**
+     * Un-camelcases a string (eg from 'hi_there' to 'Hi There')
+     * @param string $string
+     * @return string
+     */
+    protected static function uncamelcase($string)
+    {
+        return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
     }
 }

@@ -15,9 +15,33 @@ class BlockTemplates extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::parseDo()
+     * @see \C5TL\Parser::canParseDirectory()
      */
-    protected function parseDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    public function canParseDirectory()
+    {
+        return true;
+    }
+
+    /**
+     * @see \C5TL\Parser::canParseRunningConcrete5()
+     */
+    public function canParseRunningConcrete5()
+    {
+        return false;
+    }
+
+    /**
+     * @see \C5TL\Parser::parseRunningConcrete5Do()
+     */
+    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
+    {
+        throw new \Exception('This parser does not support parsing a running concrete5 instance');
+    }
+
+    /**
+     * @see \C5TL\Parser::parseDirectoryDo()
+     */
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $templateHandles = array();
         $prefix = strlen($relativePath) ? "$relativePath/" : '';
@@ -48,7 +72,7 @@ class BlockTemplates extends \C5TL\Parser
         }
         $context = 'TemplateFileName';
         foreach ($templateHandles as $templateHandle => $references) {
-            $name = ucwords(str_replace(array('_', '-', '/'), ' ', $templateHandle));
+            $name = static::uncamelcase($templateHandle);
             $translation = $translations->find($context, $name);
             if (!$translation) {
                 $translation = $translations->insert($context, $name);
