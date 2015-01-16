@@ -22,12 +22,13 @@
         }
     ],
     "support": {
+        "email": "mlocati@gmail.com",
         "issues": "https://github.com/mlocati/concrete5-translate-library/issues",
         "source": "https://github.com/mlocati/concrete5-translate-library"
     },
     "require": {
         "php": ">=5.3.0",
-        "gettext/gettext": "2.2.*"
+        "gettext/gettext": "dev-master"
     },
     "autoload": {
         "psr-4": {
