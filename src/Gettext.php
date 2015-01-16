@@ -11,7 +11,7 @@ class Gettext
      * @param string $command One of the gettext commands
      * @return bool
      */
-    public static function hasCommand($command)
+    public static function commandIsAvailable($command)
     {
         static $cache = array();
         if (!array_key_exists($command, $cache)) {
@@ -22,7 +22,7 @@ class Gettext
                     if (!in_array('exec', array_map('trim', explode(', ', strtolower(@ini_get('disable_functions')))))) {
                         $rc = 1;
                         $output = array();
-                        @exec($command . ' --version', $output, $rc);
+                        @exec($command . ' --version 2>&1', $output, $rc);
                         if ($rc === 0) {
                             $cache[$command] = true;
                         }
