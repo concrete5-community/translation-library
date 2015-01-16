@@ -20,8 +20,8 @@ class Cif extends \C5TL\Parser
     protected function parseDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $prefix = strlen($relativePath) ? "$relativePath/" : '';
-        foreach ($this->getDirectoryStructure($rootDirectory) as $child) {
-            $shownDirectory = $prefix . $child;
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+            $shownDirectory = $prefix . (strlen($child) ? "$child/" : '');
             $fullDirectoryPath = "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -31,7 +31,7 @@ class Cif extends \C5TL\Parser
                 if (strpos($file, '.') !== 0) {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.xml$/', $file) && is_file($fullFilePath)) {
-                        static::parseXml($translations, $fullFilePath, "$shownDirectory/$file");
+                        static::parseXml($translations, $fullFilePath, $shownDirectory.$file);
                     }
                 }
             }
