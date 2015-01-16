@@ -1,17 +1,18 @@
 {
-    "name": "mlocati/concrete5-translate-library",
+    "name": "mlocati/concrete5-translation-library",
     "description": "Library to handle concrete5 core and package translations",
     "type": "library",
     "keywords": [
         "concrete5",
         "translate",
+        "translation",
         "packages",
         "internationalization",
         "i18n",
         "localization",
         "l10n"
     ],
-    "homepage": "https://github.com/mlocati/concrete5-translate-library",
+    "homepage": "https://github.com/mlocati/concrete5-translation-library",
     "license": "MIT",
     "authors": [
         {
@@ -23,8 +24,8 @@
     ],
     "support": {
         "email": "mlocati@gmail.com",
-        "issues": "https://github.com/mlocati/concrete5-translate-library/issues",
-        "source": "https://github.com/mlocati/concrete5-translate-library"
+        "issues": "https://github.com/mlocati/concrete5-translation-library/issues",
+        "source": "https://github.com/mlocati/concrete5-translation-library"
     },
     "require": {
         "php": ">=5.3.0",
