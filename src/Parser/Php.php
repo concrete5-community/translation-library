@@ -20,8 +20,8 @@ class Php extends \C5TL\Parser
     protected function parseDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $phpFiles = array();
-        foreach ($this->getDirectoryStructure($rootDirectory) as $child) {
-            $fullDirectoryPath = "$rootDirectory/$child";
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+            $fullDirectoryPath = strlen($child) ? "$rootDirectory/$child" : $rootDirectory;
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
                 throw new \Exception("Unable to parse directory $fullDirectoryPath");
@@ -30,7 +30,7 @@ class Php extends \C5TL\Parser
                 if (strpos($file, '.') !== 0) {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.php$/', $file) && is_file($fullFilePath)) {
-                        $phpFiles[] = "$child/$file";
+                        $phpFiles[] = $fullDirectoryPath = strlen($child) ? "$child/$file" : $file;
                     }
                 }
             }
