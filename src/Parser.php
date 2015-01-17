@@ -21,13 +21,10 @@ abstract class Parser
      * Does this parser can parse directories?
      * @return bool
      */
-    abstract public function canParseDirectory();
-
-    /**
-     * Does this parser can parse data from a running concrete5 instance?
-     * @return bool
-     */
-    abstract public function canParseRunningConcrete5();
+    public function canParseDirectory()
+    {
+        return false;
+    }
 
     /**
      * Extracts translations from a directory.
@@ -37,7 +34,7 @@ abstract class Parser
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    public function parseDirectory($translations, $rootDirectory, $relativePath = '')
+    final public function parseDirectory($translations, $rootDirectory, $relativePath = '')
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -64,7 +61,19 @@ abstract class Parser
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      */
-    abstract protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath);
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    {
+        throw new \Exception('This parser does not support filesystem parsing');
+    }
+
+    /**
+     * Does this parser can parse data from a running concrete5 instance?
+     * @return bool
+     */
+    public function canParseRunningConcrete5()
+    {
+        return false;
+    }
 
     /**
      * Extracts translations from a running concrete5 instance.
@@ -72,7 +81,7 @@ abstract class Parser
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    public function parseRunningConcrete5($translations)
+    final public function parseRunningConcrete5($translations)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -94,7 +103,10 @@ abstract class Parser
      * @param \Gettext\Translations $translations Found translatable strings will be appended here
      * @param string $concrete5version The version of the running concrete5 instance.
      */
-    abstract protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version);
+    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
+    {
+        throw new \Exception('This parser does not support parsing a running concrete5 instance');
+    }
 
     /**
      * Clears the memory cache.
@@ -110,7 +122,7 @@ abstract class Parser
      * @param bool $exclude3rdParty=true Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
      * @return array
      */
-    protected static function getDirectoryStructure($rootDirectory, $exclude3rdParty = true)
+    final protected static function getDirectoryStructure($rootDirectory, $exclude3rdParty = true)
     {
         $rootDirectory = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $rootDirectory), '/');
         if (!array_key_exists(__FUNCTION__, self::$cache)) {
@@ -132,7 +144,7 @@ abstract class Parser
      * @throws \Exception
      * @return array[string]
      */
-    private static function getDirectoryStructureDo($relativePath, $rootDirectory, $exclude3rdParty)
+    final private static function getDirectoryStructureDo($relativePath, $rootDirectory, $exclude3rdParty)
     {
         $thisRoot = $rootDirectory;
         if (strlen($relativePath) > 0) {
@@ -201,7 +213,7 @@ abstract class Parser
      * @param string $string
      * @return string
      */
-    protected static function uncamelcase($string)
+    final protected static function uncamelcase($string)
     {
         return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
     }

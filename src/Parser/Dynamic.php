@@ -15,27 +15,11 @@ class Dynamic extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::canParseDirectory()
-     */
-    public function canParseDirectory()
-    {
-        return false;
-    }
-
-    /**
      * @see \C5TL\Parser::canParseRunningConcrete5()
      */
     public function canParseRunningConcrete5()
     {
         return true;
-    }
-
-    /**
-     * @see \C5TL\Parser::parseDirectoryDo()
-     */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
-    {
-        throw new \Exception('This parser does not support filesystem parsing');
     }
 
     /**

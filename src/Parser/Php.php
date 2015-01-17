@@ -23,22 +23,6 @@ class Php extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::canParseRunningConcrete5()
-     */
-    public function canParseRunningConcrete5()
-    {
-        return false;
-    }
-
-    /**
-     * @see \C5TL\Parser::parseRunningConcrete5Do()
-     */
-    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
-    {
-        throw new \Exception('This parser does not support parsing a running concrete5 instance');
-    }
-
-    /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
@@ -53,7 +37,7 @@ class Php extends \C5TL\Parser
             foreach ($contents as $file) {
                 if (strpos($file, '.') !== 0) {
                     $fullFilePath = "$fullDirectoryPath/$file";
-                    if (preg_match('/^(.*)\.php$/', $file) && is_file($fullFilePath)) {
+                    if (preg_match('/^(.*)\.php$/i', $file) && is_file($fullFilePath)) {
                         $phpFiles[] = $fullDirectoryPath = strlen($child) ? "$child/$file" : $file;
                     }
                 }

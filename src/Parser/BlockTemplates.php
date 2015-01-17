@@ -23,22 +23,6 @@ class BlockTemplates extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::canParseRunningConcrete5()
-     */
-    public function canParseRunningConcrete5()
-    {
-        return false;
-    }
-
-    /**
-     * @see \C5TL\Parser::parseRunningConcrete5Do()
-     */
-    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
-    {
-        throw new \Exception('This parser does not support parsing a running concrete5 instance');
-    }
-
-    /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
