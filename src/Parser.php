@@ -40,13 +40,13 @@ abstract class Parser
 
     /**
      * Extracts translations from a directory.
-     * @param \Gettext\Translations|null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @param string $rootDirectory The base directory where we start looking translations from.
+     * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @param string $relativePath='' The relative path (translations references will be prepended with this path).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    final public function parseDirectory($translations, $rootDirectory, $relativePath = '')
+    final public function parseDirectory($rootDirectory, $translations = null, $relativePath = '')
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -89,11 +89,11 @@ abstract class Parser
 
     /**
      * Extracts translations from a running concrete5 instance.
-     * @param \Gettext\Translations|null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
+     * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    final public function parseRunningConcrete5($translations)
+    final public function parseRunningConcrete5($translations = null)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
