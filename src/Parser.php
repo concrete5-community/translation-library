@@ -13,9 +13,21 @@ abstract class Parser
     private static $cache = array();
 
     /**
-     * Returns the parser name
+     * Returns the parser name.
+     * @return string
      */
     abstract public function getParserName();
+
+    /**
+     * Returns the parser handler.
+     * @return string
+     */
+    final public function getParserHandle()
+    {
+        $chunks = explode('\\', get_class($this));
+
+        return static::handlifyString(end($chunks));
+    }
 
     /**
      * Does this parser can parse directories?
@@ -209,12 +221,27 @@ abstract class Parser
     }
 
     /**
-     * Camelcases a string and separate words (eg from 'hi_there' to 'Hi There')
+     * Camelcases a string and separates words (eg from 'hi_there' to 'Hi There')
      * @param string $string
      * @return string
      */
     final protected static function unhandleString($string)
     {
         return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
+    }
+
+    /**
+     * Concatenates words with an underscore and lowercases them (eg from 'HiThere' or 'HiThere' to 'hi_there'). Upper case words are prepended with an underscore too.
+     * @param string $string
+     * @return string
+     */
+    final public static function handlifyString($string)
+    {
+        $string = preg_replace('/\W+/', '_', $string);
+        $string = preg_replace('/([A-Z])/', '_$1', $string);
+        $string = strtolower($string);
+        $string = preg_replace('/_+/', '_', trim($string, '_'));
+
+        return $string;
     }
 }
