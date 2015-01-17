@@ -220,6 +220,17 @@ abstract class Parser
         return $result;
     }
 
+    final public static function getByHandle($parserHandle)
+    {
+        $parser = null;
+        $fqClassName = '\\'.__NAMESPACE__ .'\\Parser\\'.static::camelifyString($parserHandle);
+        if (class_exists($fqClassName, true)) {
+            $parser = new $fqClassName();
+        }
+
+        return $parser;
+    }
+
     /**
      * Camelcases a string and separates words (eg from 'hi_there' to 'Hi There')
      * @param string $string
@@ -231,11 +242,21 @@ abstract class Parser
     }
 
     /**
+     * Camelcases a string (eg from 'hi_there' to 'HiThere')
+     * @param string $string
+     * @return string
+     */
+    final protected static function camelifyString($string)
+    {
+        return str_replace(' ', '', static::unhandleString($string));
+    }
+
+    /**
      * Concatenates words with an underscore and lowercases them (eg from 'HiThere' or 'HiThere' to 'hi_there'). Upper case words are prepended with an underscore too.
      * @param string $string
      * @return string
      */
-    final public static function handlifyString($string)
+    final protected static function handlifyString($string)
     {
         $string = preg_replace('/\W+/', '_', $string);
         $string = preg_replace('/([A-Z])/', '_$1', $string);
