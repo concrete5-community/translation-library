@@ -71,7 +71,7 @@ class Dynamic extends \C5TL\Parser
         }
         foreach (call_user_func($akcClass .'::getList') as $akc) {
             $akcHandle = $akc->getAttributeKeyCategoryHandle();
-            $parsed[''][] = array_key_exists($akcHandle, $akcNameMap) ? $akcNameMap[$akcHandle] : static::uncamelcase($akcHandle);
+            $parsed[''][] = array_key_exists($akcHandle, $akcNameMap) ? $akcNameMap[$akcHandle] : static::unhandleString($akcHandle);
         }
         // Permission key categories
         $pkcNameMap = array(
@@ -102,7 +102,7 @@ class Dynamic extends \C5TL\Parser
         if (strlen($pkcClass)) {
             foreach (call_user_func($pkcClass .'::getList') as $pkc) {
                 $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
-                $parsed[''][] = array_key_exists($pkcHandle, $pkcNameMap) ? $pkcNameMap[$pkcHandle] : static::uncamelcase($pkcHandle);
+                $parsed[''][] = array_key_exists($pkcHandle, $pkcNameMap) ? $pkcNameMap[$pkcHandle] : static::unhandleString($pkcHandle);
             }
         }
 

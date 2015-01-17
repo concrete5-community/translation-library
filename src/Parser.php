@@ -209,11 +209,11 @@ abstract class Parser
     }
 
     /**
-     * Un-camelcases a string (eg from 'hi_there' to 'Hi There')
+     * Camelcases a string and separate words (eg from 'hi_there' to 'Hi There')
      * @param string $string
      * @return string
      */
-    final protected static function uncamelcase($string)
+    final protected static function unhandleString($string)
     {
         return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
     }

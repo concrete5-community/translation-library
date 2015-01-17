@@ -56,7 +56,7 @@ class BlockTemplates extends \C5TL\Parser
         }
         $context = 'TemplateFileName';
         foreach ($templateHandles as $templateHandle => $references) {
-            $name = static::uncamelcase($templateHandle);
+            $name = static::unhandleString($templateHandle);
             $translation = $translations->find($context, $name);
             if (!$translation) {
                 $translation = $translations->insert($context, $name);
