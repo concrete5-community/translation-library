@@ -1,0 +1,50 @@
+<?php
+namespace C5TL\Parser\DynamicItem;
+
+/**
+ * Extract translatable data from PermissionKeyCategories
+ */
+class PermissionKeyCategory extends DynamicItem
+{
+    /**
+     * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
+     */
+    protected static function getClassNameForExtractor()
+    {
+        return '\Concrete\Core\Permission\Category';
+    }
+
+    /**
+     * @see \C5TL\Parser\DynamicItem::parseManual()
+     */
+    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    {
+        $pkcNameMap = array(
+            'page' => 'Page',
+            'single_page' => 'Single page',
+            'stack' => 'Stack',
+            'composer_page' => 'Composer page',
+            'user' => 'User',
+            'file_set' => 'File set',
+            'file' => 'File',
+            'area' => 'Area',
+            'block_type' => 'Block type',
+            'block' => 'Block',
+            'admin' => 'Administration',
+            'sitemap' => 'Site map',
+            'marketplace_newsflow' => 'MarketPlace newsflow',
+            'basic_workflow' => 'Basic workflow',
+        );
+        if (version_compare($concrete5version, '5.7') < 0) {
+            $pkcClass = '\PermissionKeyCategory';
+        } else {
+            $pkcClass = '\Concrete\Core\Permission\Category';
+        }
+        if (class_exists($pkcClass, true) && method_exists($pkcClass, 'getList')) {
+            foreach (call_user_func($pkcClass .'::getList') as $pkc) {
+                $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
+                self::addTranslation($translations, isset($pkcNameMap) ? $pkcNameMap[$pkcHandle] : static::unhandleString($pkcHandle));
+            }
+        }
+    }
+}
