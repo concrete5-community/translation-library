@@ -41,12 +41,14 @@ abstract class Parser
     /**
      * Extracts translations from a directory.
      * @param string $rootDirectory The base directory where we start looking translations from.
+     * @param string $relativePath The relative path (translations references will be prepended with this path).
      * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
-     * @param string $relativePath='' The relative path (translations references will be prepended with this path).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
+     * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`.
+     * @example If you want to parse a concrete5 package, you should call `parseDirectory('PathToThePackageFolder', 'packages/YourPackageHandle')`.
      */
-    final public function parseDirectory($rootDirectory, $translations = null, $relativePath = '')
+    final public function parseDirectory($rootDirectory, $relativePath, $translations = null)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -176,14 +178,7 @@ abstract class Parser
                 continue;
             }
             if ($exclude3rdParty) {
-                $skip = false;
-                switch ($entry) {
-                    case 'vendor':
-                    case '3rdparty':
-                        $skip = true;
-                        break;
-                }
-                if ($skip) {
+                if ((strcmp($entry, 'vendor') === 0) || preg_match('%/libraries/3rdparty$%', $fullPath)) {
                     continue;
                 }
             }
