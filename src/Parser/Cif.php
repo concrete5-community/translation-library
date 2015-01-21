@@ -381,12 +381,9 @@ class Cif extends \C5TL\Parser
      */
     private static function readXmlNodeAttribute(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $attributeName, $context = '')
     {
-        $value = $node->getAttribute($attributeName);
+        $value = (string) $node->getAttribute($attributeName);
         if (strlen($value)) {
-            $translation = $translations->find($context, $value);
-            if (!$translation) {
-                $translation = $translations->insert($context, $value);
-            }
+            $translation = $translations->insert($context, $value);
             $translation->addReference($filenameRel, $node->getLineNo());
         }
     }
@@ -401,10 +398,7 @@ class Cif extends \C5TL\Parser
     {
         $keywords = (string) $node->nodeValue;
         if (strlen($keywords) > 0) {
-            $translation = $translations->find('', $keywords);
-            if (!$translation) {
-                $translation = $translations->insert('', $keywords);
-            }
+            $translation = $translations->insert('', $keywords);
             $translation->addReference($filenameRel, $node->getLineNo());
             $pageUrl = (string) $pageUrl;
             if (strlen($pageUrl) > 0) {
@@ -424,10 +418,7 @@ class Cif extends \C5TL\Parser
     {
         $value = (string) $node->nodeValue;
         if (strlen($value) > 0) {
-            $translation = $translations->find($context, $value);
-            if (!$translation) {
-                $translation = $translations->insert($context, $value);
-            }
+            $translation = $translations->insert($context, $value);
             $translation->addReference($filenameRel, $node->getLineNo());
         }
     }

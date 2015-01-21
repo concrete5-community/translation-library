@@ -48,9 +48,7 @@ abstract class DynamicItem
     final protected static function addTranslation(\Gettext\Translations $translations, $string, $context = '')
     {
         if (is_string($string) && isset($string[0])) {
-            if (!$translations->find($context, $string)) {
-                $translations->insert($context, $string);
-            }
+            $translations->insert($context, $string);
         }
     }
 }

@@ -80,13 +80,8 @@ class ThemePresets extends \C5TL\Parser
                 @closedir($hDir);
             }
         }
-        $context = 'PresetName';
         foreach ($themesPresets as $themesPreset => $references) {
-            $name = ucwords(str_replace(array('_', '-', '/'), ' ', $themesPreset));
-            $translation = $translations->find($context, $name);
-            if (!$translation) {
-                $translation = $translations->insert($context, $name);
-            }
+            $translation = $translations->insert('PresetName', ucwords(str_replace(array('_', '-', '/'), ' ', $themesPreset)));
             foreach ($references as $reference) {
                 $translation->addReference($reference);
             }
