@@ -30,7 +30,7 @@ class Cif extends \C5TL\Parser
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
             $shownDirectory = $prefix . (($child === '') ? '' : "$child/");
-            $fullDirectoryPath = "$rootDirectory/$child";
+            $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
                 throw new \Exception("Unable to parse directory $fullDirectoryPath");
