@@ -38,7 +38,7 @@ class Php extends \C5TL\Parser
                 if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.php$/i', $file) && is_file($fullFilePath)) {
-                        $phpFiles[] = $fullDirectoryPath = ($child === '') ? $file : "$child/$file";
+                        $phpFiles[] = ($child === '') ? $file : "$child/$file";
                     }
                 }
             }
