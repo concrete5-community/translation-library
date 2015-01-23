@@ -23,7 +23,7 @@ class SelectAttributeValue extends DynamicItem
             foreach (\AttributeKeyCategory::getList() as $akc) {
                 $akcHandle = $akc->getAttributeKeyCategoryHandle();
                 foreach (\AttributeKey::getList($akcHandle) as $ak) {
-                    if ($ak->getAttributeType()->getAttributeTypeHandle() == 'select') {
+                    if ($ak->getAttributeType()->getAttributeTypeHandle() === 'select') {
                         foreach ($ak->getController()->getOptions() as $option) {
                             self::addTranslation($translations, 'SelectAttributeValue', $option->getSelectAttributeOptionValue(false));
                         }

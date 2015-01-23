@@ -43,7 +43,7 @@ class PermissionKeyCategory extends DynamicItem
         if (class_exists($pkcClass, true) && method_exists($pkcClass, 'getList')) {
             foreach (call_user_func($pkcClass .'::getList') as $pkc) {
                 $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
-                self::addTranslation($translations, isset($pkcNameMap) ? $pkcNameMap[$pkcHandle] : static::unhandleString($pkcHandle));
+                self::addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : static::unhandleString($pkcHandle));
             }
         }
     }

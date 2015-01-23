@@ -14,7 +14,7 @@ class Gettext
     public static function commandIsAvailable($command)
     {
         static $cache = array();
-        if (!array_key_exists($command, $cache)) {
+        if (!isset($cache[$command])) {
             $cache[$command] = false;
             $safeMode = @ini_get('safe_mode');
             if (empty($safeMode)) {

@@ -28,11 +28,11 @@ class BlockTemplates extends \C5TL\Parser
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $templateHandles = array();
-        $prefix = strlen($relativePath) ? "$relativePath/" : '';
+        $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach ($this->getDirectoryStructure($rootDirectory) as $child) {
             $shownChild = $prefix . $child;
             if (preg_match('%(?:^|/)blocks/\w+/templates/(\w+)$%', $shownChild, $matches)) {
-                if (!array_key_exists($matches[1], $templateHandles)) {
+                if (!isset($templateHandles[$matches[1]])) {
                     $templateHandles[$matches[1]] = array();
                 }
                 $templateHandles[$matches[1]][] = $shownChild;
@@ -43,9 +43,9 @@ class BlockTemplates extends \C5TL\Parser
                     throw new \Exception("Unable to parse directory $fullpath");
                 }
                 foreach ($contents as $file) {
-                    if (strpos($file, '.') !== 0) {
+                    if ($file[0] !== '.') {
                         if (preg_match('/^(.*)\.php$/', $file, $matches) && is_file("$fullpath/$file")) {
-                            if (!array_key_exists($matches[1], $templateHandles)) {
+                            if (!isset($templateHandles[$matches[1]])) {
                                 $templateHandles[$matches[1]] = array();
                             }
                             $templateHandles[$matches[1]][] = $shownChild . "/$file";

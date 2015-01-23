@@ -53,11 +53,16 @@ abstract class Parser
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
         }
-        $dir = (is_string($rootDirectory) && strlen($rootDirectory)) ? @realpath($rootDirectory) : false;
-        if (is_string($dir)) {
-            $dir = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $dir), '/');
+        $dir = (string) $rootDirectory;
+        if ($dir !== '') {
+            $dir = @realpath($rootDirectory);
+            if (($dir === false) || (!is_dir($dir))) {
+                $dir = '';
+            } else {
+                $dir = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $dir), '/');
+            }
         }
-        if (($dir === false) || (!is_dir($dir))) {
+        if ($dir === '') {
             throw new \Exception("Unable to find the directory $rootDirectory");
         }
         if (!@is_readable($dir)) {
@@ -104,7 +109,7 @@ abstract class Parser
         if (defined('\C5_EXECUTE') && defined('\APP_VERSION') && is_string(\APP_VERSION)) {
             $runningVersion = \APP_VERSION;
         }
-        if (!strlen($runningVersion)) {
+        if ($runningVersion === '') {
             throw new \Exception('Unable to determine the current working directory');
         }
         $this->parseRunningConcrete5Do($translations, $runningVersion);
@@ -139,15 +144,15 @@ abstract class Parser
     final protected static function getDirectoryStructure($rootDirectory, $exclude3rdParty = true)
     {
         $rootDirectory = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $rootDirectory), '/');
-        if (!array_key_exists(__FUNCTION__, self::$cache)) {
+        if (!isset(self::$cache[__FUNCTION__])) {
             self::$cache[__FUNCTION__] = array();
         }
         $cacheKey = $rootDirectory . '*' . ($exclude3rdParty ? '1' : '0');
-        if (!array_key_exists($cacheKey, self::$cache)) {
-            self::$cache[$cacheKey] = static::getDirectoryStructureDo('', $rootDirectory, $exclude3rdParty);
+        if (!isset(self::$cache[__FUNCTION__][$cacheKey])) {
+            self::$cache[__FUNCTION__][$cacheKey] = static::getDirectoryStructureDo('', $rootDirectory, $exclude3rdParty);
         }
 
-        return self::$cache[$cacheKey];
+        return self::$cache[__FUNCTION__][$cacheKey];
     }
 
     /**
@@ -161,7 +166,7 @@ abstract class Parser
     final private static function getDirectoryStructureDo($relativePath, $rootDirectory, $exclude3rdParty)
     {
         $thisRoot = $rootDirectory;
-        if (strlen($relativePath) > 0) {
+        if ($relativePath !== '') {
             $thisRoot .= '/' . $relativePath;
         }
         $subDirs = array();
@@ -170,7 +175,7 @@ abstract class Parser
             throw new \Exception("Unable to open directory $rootDirectory");
         }
         while (($entry = @readdir($hDir)) !== false) {
-            if (strpos($entry, '.') === 0) {
+            if ($entry[0] === '.') {
                 continue;
             }
             $fullPath = $thisRoot . '/' . $entry;
@@ -178,7 +183,7 @@ abstract class Parser
                 continue;
             }
             if ($exclude3rdParty) {
-                if ((strcmp($entry, 'vendor') === 0) || preg_match('%/libraries/3rdparty$%', $fullPath)) {
+                if (($entry === 'vendor') || preg_match('%/libraries/3rdparty$%', $fullPath)) {
                     continue;
                 }
             }
@@ -187,7 +192,7 @@ abstract class Parser
         @closedir($hDir);
         $result = array();
         foreach ($subDirs as $subDir) {
-            $rel = strlen($relativePath) ? "$relativePath/$subDir" : $subDir;
+            $rel = ($relativePath === '') ? $subDir : "$relativePath/$subDir";
             $result = array_merge($result, static::getDirectoryStructureDo($rel, $rootDirectory, $exclude3rdParty));
             $result[] = $rel;
         }
@@ -205,7 +210,7 @@ abstract class Parser
         $dir = __DIR__ . '/Parser';
         if (is_dir($dir) && is_readable($dir)) {
             foreach (scandir($dir) as $item) {
-                if (preg_match('/^(.+)\.php$/i', $item, $matches)) {
+                if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
                     $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . $matches[1];
                     $result[] = new $fqClassName();
                 }

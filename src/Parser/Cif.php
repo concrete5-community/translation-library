@@ -27,16 +27,16 @@ class Cif extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
-        $prefix = strlen($relativePath) ? "$relativePath/" : '';
+        $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
-            $shownDirectory = $prefix . (strlen($child) ? "$child/" : '');
+            $shownDirectory = $prefix . (($child === '') ? '' : "$child/");
             $fullDirectoryPath = "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
                 throw new \Exception("Unable to parse directory $fullDirectoryPath");
             }
             foreach ($contents as $file) {
-                if (strpos($file, '.') !== 0) {
+                if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.xml$/', $file) && is_file($fullFilePath)) {
                         static::parseXml($translations, $fullFilePath, $shownDirectory.$file);
@@ -58,7 +58,7 @@ class Cif extends \C5TL\Parser
         $xml = \DOMDocument::load($realPath);
         if ($xml === false) {
             global $php_errormsg;
-            if (isset($php_errormsg) && strlen($php_errormsg)) {
+            if (isset($php_errormsg) && $php_errormsg) {
                 throw new \Exception("Error loading '$realPath': $php_errormsg");
             } else {
                 throw new \Exception("Error loading '$realPath'");
@@ -317,8 +317,8 @@ class Cif extends \C5TL\Parser
                 static::readXmlNodeAttribute($translations, $node, 'description', $filenameRel, 'PageTemplatePageDescription');
                 break;
             case '/concrete5-cif/attributekeys/attributekey/type/options/option':
-                $attributeKeyType = $node/*option*/->parentNode/*options*/->parentNode/*type*/->parentNode/*attributekey*/->getAttribute('type');
-                switch (strlen($attributeKeyType) ? strval($attributeKeyType) : '') {
+                $attributeKeyType = (string) $node/*option*/->parentNode/*options*/->parentNode/*type*/->parentNode/*attributekey*/->getAttribute('type');
+                switch ($attributeKeyType) {
                     case 'select':
                         static::readXmlNodeAttribute($translations, $node, 'value', $filenameRel, 'SelectAttributeValue');
                         break;
@@ -365,7 +365,7 @@ class Cif extends \C5TL\Parser
         }
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
-                if (is_null($childnodesLimit) || (is_a($child, 'DOMElement') && array_search($child->tagName, $childnodesLimit) !== false)) {
+                if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && isset($childnodesLimit[$child->tagName]))) {
                     static::parseXmlNode($translations, $child, $filenameRel, $path);
                 }
             }
@@ -382,7 +382,7 @@ class Cif extends \C5TL\Parser
     private static function readXmlNodeAttribute(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $attributeName, $context = '')
     {
         $value = (string) $node->getAttribute($attributeName);
-        if (strlen($value)) {
+        if ($value !== '') {
             $translation = $translations->insert($context, $value);
             $translation->addReference($filenameRel, $node->getLineNo());
         }
@@ -397,11 +397,11 @@ class Cif extends \C5TL\Parser
     private static function readXmlPageKeywords(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $pageUrl)
     {
         $keywords = (string) $node->nodeValue;
-        if (strlen($keywords) > 0) {
+        if ($keywords !== '') {
             $translation = $translations->insert('', $keywords);
             $translation->addReference($filenameRel, $node->getLineNo());
             $pageUrl = (string) $pageUrl;
-            if (strlen($pageUrl) > 0) {
+            if ($pageUrl !== '') {
                 $translation->addComment("Keywords for page $pageUrl");
             }
         }
@@ -417,7 +417,7 @@ class Cif extends \C5TL\Parser
     private static function parseXmlNodeValue(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $context = '')
     {
         $value = (string) $node->nodeValue;
-        if (strlen($value) > 0) {
+        if ($value !== '') {
             $translation = $translations->insert($context, $value);
             $translation->addReference($filenameRel, $node->getLineNo());
         }

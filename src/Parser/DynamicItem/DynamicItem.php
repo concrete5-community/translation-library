@@ -14,7 +14,7 @@ abstract class DynamicItem
     final public static function parse(\Gettext\Translations $translations, $concrete5version)
     {
         $fqClassName = static::getClassNameForExtractor();
-        if (is_string($fqClassName) && strlen($fqClassName) && class_exists($fqClassName, true) && method_exists($fqClassName, 'exportTranslations')) {
+        if (is_string($fqClassName) && ($fqClassName !== '') && class_exists($fqClassName, true) && method_exists($fqClassName, 'exportTranslations')) {
             $translations->mergeWith(call_user_func($fqClassName .'::exportTranslations'));
         } else {
             static::parseManual($translations, $concrete5version);
@@ -47,7 +47,7 @@ abstract class DynamicItem
      */
     final protected static function addTranslation(\Gettext\Translations $translations, $string, $context = '')
     {
-        if (is_string($string) && isset($string[0])) {
+        if (is_string($string) && ($string !== '')) {
             $translations->insert($context, $string);
         }
     }

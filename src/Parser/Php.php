@@ -29,16 +29,16 @@ class Php extends \C5TL\Parser
     {
         $phpFiles = array();
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
-            $fullDirectoryPath = strlen($child) ? "$rootDirectory/$child" : $rootDirectory;
+            $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
                 throw new \Exception("Unable to parse directory $fullDirectoryPath");
             }
             foreach ($contents as $file) {
-                if (strpos($file, '.') !== 0) {
+                if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.php$/i', $file) && is_file($fullFilePath)) {
-                        $phpFiles[] = $fullDirectoryPath = strlen($child) ? "$child/$file" : $file;
+                        $phpFiles[] = $fullDirectoryPath = ($child === '') ? $file : "$child/$file";
                     }
                 }
             }
@@ -50,23 +50,14 @@ class Php extends \C5TL\Parser
                 $newTranslations = static::parseDirectoryDo_php($rootDirectory, $phpFiles);
             }
             if ($newTranslations->count() > 0) {
-                if (strlen($relativePath) > 0) {
+                if ($relativePath !== '') {
                     foreach ($newTranslations as $newTranslation) {
                         $references = $newTranslation->getReferences();
                         $newTranslation->wipeReferences();
                         foreach ($references as $reference) {
                             $newTranslation->addReference($relativePath.'/'.$reference[0], $reference[1]);
                         }
-                    }
-                }
-                if ($translations->count() > 0) {
-                    foreach ($newTranslations as $newTranslation) {
-                        $oldTranslation = $translations->find($newTranslation);
-                        if ($oldTranslation) {
-                            $oldTranslation->mergeWith($newTranslation);
-                        } else {
-                            $translations[] = $newTranslation;
-                        }
+                        $translations[] = $newTranslation;
                     }
                 } else {
                     foreach ($newTranslations as $newTranslation) {
@@ -101,7 +92,7 @@ class Php extends \C5TL\Parser
             }
             if (@file_put_contents($tempFileList, implode("\n", $phpFiles)) === false) {
                 global $php_errormsg;
-                if (isset($php_errormsg) && strlen($php_errormsg)) {
+                if (isset($php_errormsg) && $php_errormsg) {
                     throw new \Exception("Error writing a temporary file: $php_errormsg");
                 } else {
                     throw new \Exception("Error writing a temporary file");

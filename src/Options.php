@@ -21,9 +21,9 @@ class Options
     {
         $check = function ($s) {
             $result = '';
-            if (is_string($s) && (strlen($s) > 0)) {
+            if (is_string($s) && ($s !== '')) {
                 $s = @realpath($s);
-                if (is_string($s) && is_dir($s) && is_writable(($s))) {
+                if (($s !== false) && is_dir($s) && is_writable(($s))) {
                     $result = $s;
                 }
             }
@@ -32,7 +32,7 @@ class Options
         };
         $result = '';
         if ($result === '') {
-            if (strlen(static::$temporaryDirectory) > 0) {
+            if (static::$temporaryDirectory !== '') {
                 $result = $check(static::$temporaryDirectory);
                 if ($result === '') {
                     throw new \Exception('The configured temporary directory is not valid');
@@ -47,7 +47,7 @@ class Options
         if ($result === '') {
             if (isset($_ENV) && is_array($_ENV)) {
                 foreach (array('TMP', 'TMPDIR', 'TEMP') as $k) {
-                    if (array_key_exists($k, $_ENV)) {
+                    if (isset($_ENV[$k])) {
                         $result = $check($_ENV[$k]);
                         if ($result !== '') {
                             break;
@@ -69,10 +69,6 @@ class Options
      */
     public static function setTemporaryDirectory($value)
     {
-        if (is_string($value) && (strlen($value) > 0)) {
-            static::$temporaryDirectory = $value;
-        } else {
-            static::$temporaryDirectory = '';
-        }
+        static::$temporaryDirectory = (string) $value;
     }
 }

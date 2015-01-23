@@ -28,7 +28,7 @@ class ThemePresets extends \C5TL\Parser
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
     {
         $themesPresets = array();
-        $prefix = strlen($relativePath) ? "$relativePath/" : '';
+        $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach ($this->getDirectoryStructure($rootDirectory) as $child) {
             $shownChild = $prefix . $child;
             if (preg_match('%(?:^|/)themes/\w+/css/presets$%', $shownChild, $matches)) {
@@ -39,7 +39,7 @@ class ThemePresets extends \C5TL\Parser
                 }
                 try {
                     while (($file = @readdir($hDir)) !== false) {
-                        if (preg_match('/[^.].*\.less$/i', $file)) {
+                        if (($file[0] !== '.') && preg_match('/[^.].*\.less$/i', $file)) {
                             $fileAbs = "$presetsAbsDirectory/$file";
                             if (is_file($fileAbs)) {
                                 $content = @file_get_contents($fileAbs);
@@ -63,7 +63,7 @@ class ThemePresets extends \C5TL\Parser
                                         if ($p !== false) {
                                             $presetLine = substr_count(substr($content, 0, $p), "\n") + 1;
                                         }
-                                        if (!array_key_exists($presetName, $themesPresets)) {
+                                        if (!isset($themesPresets[$presetName])) {
                                             $themesPresets[$presetName] = array();
                                         }
                                         $themesPresets[$presetName][] = array($shownChild . "/$file", $presetLine);

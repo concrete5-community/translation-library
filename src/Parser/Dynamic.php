@@ -42,7 +42,7 @@ class Dynamic extends \C5TL\Parser
         $dir = __DIR__ . '/DynamicItem';
         if (is_dir($dir) && is_readable($dir)) {
             foreach (scandir($dir) as $item) {
-                if (preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
+                if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
                     $result[] = '\\' . __NAMESPACE__ . '\\DynamicItem\\' . $matches[1];
                 }
             }
