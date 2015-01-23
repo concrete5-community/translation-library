@@ -29,7 +29,7 @@
     },
     "require": {
         "php": ">=5.3.0",
-        "gettext/gettext": "dev-master"
+        "gettext/gettext": "3.*"
     },
     "autoload": {
         "psr-4": {
