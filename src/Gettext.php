@@ -19,7 +19,7 @@ class Gettext
             $safeMode = @ini_get('safe_mode');
             if (empty($safeMode)) {
                 if (function_exists('exec')) {
-                    if (!in_array('exec', array_map('trim', explode(', ', strtolower(@ini_get('disable_functions')))))) {
+                    if (!in_array('exec', array_map('trim', explode(',', strtolower(@ini_get('disable_functions')))))) {
                         $rc = 1;
                         $output = array();
                         @exec($command . ' --version 2>&1', $output, $rc);
