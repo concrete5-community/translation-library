@@ -29,15 +29,15 @@ class BlockTemplates extends \C5TL\Parser
     {
         $templateHandles = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
-        foreach ($this->getDirectoryStructure($rootDirectory) as $child) {
-            $shownChild = $prefix . $child;
-            if (preg_match('%(?:^|/)blocks/\w+/templates/(\w+)$%', $shownChild, $matches)) {
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+            $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
+            $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
+            if (preg_match('%(?:^|/)blocks/\w+/templates/(\w+)$%', $fullpath, $matches)) {
                 if (!isset($templateHandles[$matches[1]])) {
                     $templateHandles[$matches[1]] = array();
                 }
                 $templateHandles[$matches[1]][] = $shownChild;
-            } elseif (preg_match('%(^|/)blocks/\w+/templates$%', $shownChild)) {
-                $fullpath = "$rootDirectory/$child";
+            } elseif (preg_match('%(^|/)blocks/\w+/templates$%', $fullpath)) {
                 $contents = @scandir($fullpath);
                 if ($contents === false) {
                     throw new \Exception("Unable to parse directory $fullpath");
