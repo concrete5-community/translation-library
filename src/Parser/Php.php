@@ -53,7 +53,7 @@ class Php extends \C5TL\Parser
                 if ($relativePath !== '') {
                     foreach ($newTranslations as $newTranslation) {
                         $references = $newTranslation->getReferences();
-                        $newTranslation->wipeReferences();
+                        $newTranslation->deleteReferences();
                         foreach ($references as $reference) {
                             $newTranslation->addReference($relativePath.'/'.$reference[0], $reference[1]);
                         }
@@ -179,7 +179,7 @@ class Php extends \C5TL\Parser
         $startAt = strlen($prefix);
         foreach ($newTranslations as $newTranslation) {
             $references = $newTranslation->getReferences();
-            $newTranslation->wipeReferences();
+            $newTranslation->deleteReferences();
             foreach ($references as $reference) {
                 $newTranslation->addReference(substr($reference[0], $startAt), $reference[1]);
             }
