@@ -32,7 +32,7 @@ class AttributeKeyCategory extends DynamicItem
         if (class_exists($akcClass, true) && method_exists($akcClass, 'getList')) {
             foreach (call_user_func($akcClass .'::getList') as $akc) {
                 $akcHandle = $akc->getAttributeKeyCategoryHandle();
-                self::addTranslation($translations, isset($akcNameMap[$akcHandle]) ? $akcNameMap[$akcHandle] : static::unhandleString($akcHandle));
+                self::addTranslation($translations, isset($akcNameMap[$akcHandle]) ? $akcNameMap[$akcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $akcHandle));
             }
         }
     }

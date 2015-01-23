@@ -55,7 +55,7 @@ class BlockTemplates extends \C5TL\Parser
             }
         }
         foreach ($templateHandles as $templateHandle => $references) {
-            $translation = $translations->insert('TemplateFileName', static::unhandleString($templateHandle));
+            $translation = $translations->insert('TemplateFileName', ucwords(str_replace(array('_', '-', '/'), ' ', $templateHandle));
             foreach ($references as $reference) {
                 $translation->addReference($reference);
             }
