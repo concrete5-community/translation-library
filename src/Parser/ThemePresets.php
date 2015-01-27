@@ -37,7 +37,7 @@ class ThemePresets extends \C5TL\Parser
                     throw new \Exception("Unable to parse directory $presetsAbsDirectory");
                 }
                 $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
-                foreach($dirList as $file) {
+                foreach ($dirList as $file) {
                     if (($file[0] !== '.') && preg_match('/[^.].*\.less$/i', $file)) {
                         $fileAbs = "$presetsAbsDirectory/$file";
                         if (is_file($fileAbs)) {
@@ -77,7 +77,7 @@ class ThemePresets extends \C5TL\Parser
         foreach ($themesPresets as $themesPreset => $references) {
             $translation = $translations->insert('PresetName', ucwords(str_replace(array('_', '-', '/'), ' ', $themesPreset)));
             foreach ($references as $reference) {
-                $translation->addReference($reference);
+                $translation->addReference($reference[0], $reference[1]);
             }
         }
     }

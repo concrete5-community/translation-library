@@ -55,8 +55,8 @@ class Cif extends \C5TL\Parser
      */
     private static function parseXml(\Gettext\Translations $translations, $realPath, $shownPath)
     {
-        $xml = \DOMDocument::load($realPath);
-        if ($xml === false) {
+        $xml = new \DOMDocument();
+        if ($xml->load($realPath) === false) {
             global $php_errormsg;
             if (isset($php_errormsg) && $php_errormsg) {
                 throw new \Exception("Error loading '$realPath': $php_errormsg");
@@ -64,19 +64,22 @@ class Cif extends \C5TL\Parser
                 throw new \Exception("Error loading '$realPath'");
             }
         }
-        if ($xml->documentElement->tagName === 'concrete5-cif') {
-            static::parseXmlNode($translations, $xml->documentElement, $shownPath, '');
+        switch ($xml->documentElement->tagName) {
+            case 'concrete5-cif':
+            case 'styles':
+                static::parseXmlNode($translations, $shownPath, $xml->documentElement, '');
+                break;
         }
     }
 
     /** Parse an xml node and retrieves any associated POEntry.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param \DOMNode $node The current node.
      * @param string $filenameRel The relative file name of the xml file being read.
+     * @param \DOMNode $node The current node.
      * @param string $prePath The path of the node containing the current node.
      * @throws \Exception Throws an \Exception in case of errors.
      */
-    private static function parseXmlNode(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $prePath)
+    private static function parseXmlNode(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $prePath)
     {
         $nodeClass = get_class($node);
         switch ($nodeClass) {
@@ -184,6 +187,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/workflowprogresscategories':
             case '/concrete5-cif/workflowprogresscategories/category':
             case '/concrete5-cif/workflowtypes':
+            case '/styles':
                 // Skip this node
                 break;
             case '/concrete5-cif/pages/page/area/block/data/record':
@@ -222,143 +226,143 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/stacks/stack/area/block':
             case '/concrete5-cif/systemcaptcha/library':
             case '/concrete5-cif/workflowtypes/workflowtype':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel);
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name');
                 break;
             case '/styles/set':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'StyleSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'StyleSetName');
                 break;
             case '/styles/set/style':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'StyleName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'StyleName');
                 break;
             case '/concrete5-cif/attributekeys/attributekey':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'AttributeKeyName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'AttributeKeyName');
                 break;
             case '/concrete5-cif/attributekeys/attributekey/tree':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'TreeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TreeName');
                 break;
             case '/concrete5-cif/thumbnailtypes/thumbnailtype':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ThumbnailTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ThumbnailTypeName');
                 break;
             case '/concrete5-cif/trees/tree/topic_category':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'TopicCategoryName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TopicCategoryName');
                 break;
             case '/concrete5-cif/trees/tree/topic':
             case '/concrete5-cif/trees/tree/topic_category/topic':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'TopicName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TopicName');
                 break;
             case '/concrete5-cif/attributesets/attributeset':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'AttributeSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'AttributeSetName');
                 break;
             case '/concrete5-cif/attributetypes/attributetype':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'AttributeTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'AttributeTypeName');
                 break;
             case '/concrete5-cif/permissionaccessentitytypes/permissionaccessentitytype':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PermissionAccessEntityTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PermissionAccessEntityTypeName');
                 break;
             case '/concrete5-cif/systemcontenteditorsnippets/snippet':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'SystemContentEditorSnippetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'SystemContentEditorSnippetName');
                 break;
             case '/concrete5-cif/blocktypesets/blocktypeset':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'BlockTypeSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'BlockTypeSetName');
                 break;
             case '/concrete5-cif/composercontroltypes/type':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ComposerControlTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ComposerControlTypeName');
                 break;
             case '/concrete5-cif/gatheringsources/gatheringsource':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'GatheringDataSourceName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'GatheringDataSourceName');
                 break;
             case '/concrete5-cif/gatheringitemtemplates/gatheringitemtemplate':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'GatheringItemTemplateName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'GatheringItemTemplateName');
                 break;
             case '/concrete5-cif/conversationeditors/editor':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ConversationEditorName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ConversationEditorName');
                 break;
             case '/concrete5-cif/conversationratingtypes/conversationratingtype':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ConversationRatingTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ConversationRatingTypeName');
                 break;
             case '/concrete5-cif/pages/page':
             case '/concrete5-cif/pagetypes/pagetype/page':
             case '/concrete5-cif/singlepages/page':
             case '/concrete5-cif/taskpermissions/taskpermission':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel);
-                static::readXmlNodeAttribute($translations, $node, 'description', $filenameRel);
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'description');
                 break;
             case '/concrete5-cif/permissionkeys/permissionkey':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PermissionKeyName');
-                static::readXmlNodeAttribute($translations, $node, 'description', $filenameRel, 'PermissionKeyDescription');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PermissionKeyName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'description', 'PermissionKeyDescription');
                 break;
             case '/concrete5-cif/pages/page/area/block/data/record/title':
-                static::parseXmlNodeValue($translations, $node, $filenameRel);
+                static::parseXmlNodeValue($translations, $filenameRel, $node);
                 break;
             case '/concrete5-cif/pagefeeds/feed/title':
-                static::parseXmlNodeValue($translations, $node, $filenameRel, 'FeedTitle');
+                static::parseXmlNodeValue($translations, $filenameRel, $node, 'FeedTitle');
                 break;
             case '/concrete5-cif/pagefeeds/feed/description':
-                static::parseXmlNodeValue($translations, $node, $filenameRel, 'FeedDescription');
+                static::parseXmlNodeValue($translations, $filenameRel, $node, 'FeedDescription');
                 break;
             case '/concrete5-cif/singlepages/page/attributes/attributekey/value':
                 switch ($node->parentNode->getAttribute('handle')) {
                     case 'meta_keywords':
-                        static::readXmlPageKeywords($translations, $node, $filenameRel, $node->parentNode->parentNode->parentNode->getAttribute('path'));
+                        static::readXmlPageKeywords($translations, $filenameRel, $node, $node->parentNode->parentNode->parentNode->getAttribute('path'));
                         break;
                 }
                 break;
             case '/concrete5-cif/jobsets/jobset':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'JobSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'JobSetName');
                 break;
             case '/concrete5-cif/pages/page/area':
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area':
             case '/concrete5-cif/pagetypes/pagetype/page/area':
             case '/concrete5-cif/singlepages/page/area':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'AreaName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'AreaName');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/output/pagetemplate/page':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTemplatePageName');
-                static::readXmlNodeAttribute($translations, $node, 'description', $filenameRel, 'PageTemplatePageDescription');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTemplatePageName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'description', 'PageTemplatePageDescription');
                 break;
             case '/concrete5-cif/attributekeys/attributekey/type/options/option':
                 $attributeKeyType = (string) $node/*option*/->parentNode/*options*/->parentNode/*type*/->parentNode/*attributekey*/->getAttribute('type');
                 switch ($attributeKeyType) {
                     case 'select':
-                        static::readXmlNodeAttribute($translations, $node, 'value', $filenameRel, 'SelectAttributeValue');
+                        static::readXmlNodeAttribute($translations, $filenameRel, $node, 'value', 'SelectAttributeValue');
                         break;
                 }
                 break;
             case '/concrete5-cif/pagetemplates/pagetemplate':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTemplateName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTemplateName');
                 break;
             case '/concrete5-cif/imageeditor_controlsets/imageeditor_controlset':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ImageEditorControlSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ImageEditorControlSetName');
                 break;
             case '/concrete5-cif/imageeditor_components/imageeditor_component':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ImageEditorComponentName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ImageEditorComponentName');
                 break;
             case '/concrete5-cif/imageeditor_filters/imageeditor_filter':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'ImageEditorFilterName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ImageEditorFilterName');
                 break;
             case '/concrete5-cif/pagetypepublishtargettypes/type':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTypePublishTargetTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTypePublishTargetTypeName');
                 break;
             case '/concrete5-cif/pagetypecomposercontroltypes/type':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTypeComposerControlTypeName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTypeComposerControlTypeName');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/formlayout/set':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTypeFormLayoutSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTypeFormLayoutSetName');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/formlayout/set':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTypeFormLayoutSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTypeFormLayoutSetName');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/composer/formlayout/set':
-                static::readXmlNodeAttribute($translations, $node, 'name', $filenameRel, 'PageTypeComposerFormLayoutSetName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageTypeComposerFormLayoutSetName');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/formlayout/set/control':
-                static::readXmlNodeAttribute($translations, $node, 'custom-label', $filenameRel, 'PageTypeFormLayoutSetControlCustomLabel');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'custom-label', 'PageTypeFormLayoutSetControlCustomLabel');
                 break;
             case '/concrete5-cif/pagetypes/pagetype/composer/formlayout/set/control':
-                static::readXmlNodeAttribute($translations, $node, 'custom-label', $filenameRel, 'PageTypeComposerFormLayoutSetControlCustomLabel');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'custom-label', 'PageTypeComposerFormLayoutSetControlCustomLabel');
                 break;
             case '/concrete5-cif/pages/page/attributes/attributekey/topics/topic':
-                static::parseXmlNodeValue($translations, $node, $filenameRel, 'Topic');
+                static::parseXmlNodeValue($translations, $filenameRel, $node, 'Topic');
                 break;
             default:
                 throw new \Exception('Unknown tag name ' . $path . ' in ' . $filenameRel . "\n\nNode:\n" . $node->ownerDocument->saveXML($node));
@@ -366,7 +370,7 @@ class Cif extends \C5TL\Parser
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
                 if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && isset($childnodesLimit[$child->tagName]))) {
-                    static::parseXmlNode($translations, $child, $filenameRel, $path);
+                    static::parseXmlNode($translations, $filenameRel, $child, $path);
                 }
             }
         }
@@ -374,12 +378,12 @@ class Cif extends \C5TL\Parser
 
     /** Parse a node attribute and create a POEntry item if it has a value.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param \DOMNode $node The current node.
      * @param string $filenameRel The relative file name of the xml file being read.
+     * @param \DOMNode $node The current node.
      * @param string $attributeName The name of the attribute.
      * @param string $context='' The translation context.
      */
-    private static function readXmlNodeAttribute(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $attributeName, $context = '')
+    private static function readXmlNodeAttribute(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $attributeName, $context = '')
     {
         $value = (string) $node->getAttribute($attributeName);
         if ($value !== '') {
@@ -390,11 +394,11 @@ class Cif extends \C5TL\Parser
 
     /** Parse a node attribute which contains the keywords for a page.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param \DOMNode $node The current node.
      * @param string $filenameRel The relative file name of the xml file being read.
+     * @param \DOMNode $node The current node.
      * @param string $pageUrl The url of the page for which the keywords are for.
      */
-    private static function readXmlPageKeywords(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $pageUrl)
+    private static function readXmlPageKeywords(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $pageUrl)
     {
         $keywords = (string) $node->nodeValue;
         if ($keywords !== '') {
@@ -410,11 +414,11 @@ class Cif extends \C5TL\Parser
     /**
      *  Parse a node value and create a POEntry item if it has a value.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param \DOMNode $node The current node.
      * @param string $filenameRel The relative file name of the xml file being read.
+     * @param \DOMNode $node The current node.
      * @param string $context='' The translation context.
      */
-    private static function parseXmlNodeValue(\Gettext\Translations $translations, \DOMNode $node, $filenameRel, $context = '')
+    private static function parseXmlNodeValue(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $context = '')
     {
         $value = (string) $node->nodeValue;
         if ($value !== '') {
