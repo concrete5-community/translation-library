@@ -52,6 +52,7 @@ class Php extends \C5TL\Parser
             if ($newTranslations->count() > 0) {
                 if ($relativePath !== '') {
                     foreach ($newTranslations as $newTranslation) {
+                        static::fixExtractedComments($newTranslation);
                         $references = $newTranslation->getReferences();
                         $newTranslation->deleteReferences();
                         foreach ($references as $reference) {
@@ -61,8 +62,26 @@ class Php extends \C5TL\Parser
                     }
                 } else {
                     foreach ($newTranslations as $newTranslation) {
+                        static::fixExtractedComments($newTranslation);
                         $translations[] = $newTranslation;
                     }
+                }
+            }
+        }
+    }
+
+    protected static function fixExtractedComments(\Gettext\Translation $translation)
+    {
+        $extractedComments = $translation->getExtractedComments();
+        $n = count($extractedComments);
+        if ($n > 0) {
+            $m = null;
+            $translation->deleteExtractedComments();
+            foreach ($extractedComments as $extractedComment) {
+                if (preg_match('/^.\\s+i18n:?\\s*(\\S.*^)\\s*$/', $extractedComment, $m)) {
+                    $translation->addExtractedComment($m[1]);
+                } else {
+                    $translation->addExtractedComment($extractedComment);
                 }
             }
         }
