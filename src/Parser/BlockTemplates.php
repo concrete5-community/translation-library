@@ -32,12 +32,12 @@ class BlockTemplates extends \C5TL\Parser
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
             $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
             $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
-            if (preg_match('%(?:^|/)blocks/\w+/templates/(\w+)$%', $fullpath, $matches)) {
+            if (preg_match('%(?:^|/)blocks/\w+/(?:templates|composer)/(\w+)$%', $fullpath, $matches)) {
                 if (!isset($templateHandles[$matches[1]])) {
                     $templateHandles[$matches[1]] = array();
                 }
                 $templateHandles[$matches[1]][] = $shownChild;
-            } elseif (preg_match('%(^|/)blocks/\w+/templates$%', $fullpath)) {
+            } elseif (preg_match('%(^|/)blocks/\w+/(?:templates|composer)$%', $fullpath)) {
                 $contents = @scandir($fullpath);
                 if ($contents === false) {
                     throw new \Exception("Unable to parse directory $fullpath");
