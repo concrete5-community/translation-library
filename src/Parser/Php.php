@@ -101,7 +101,7 @@ class Php extends \C5TL\Parser
             throw new \Exception('Unable to determine the current working directory');
         }
         if (@chdir($rootDirectory) === false) {
-            throw new \Exception('Unable to switch to directory ' . $rootDirectory);
+            throw new \Exception('Unable to switch to directory '.$rootDirectory);
         }
         try {
             $tempDirectory = \C5TL\Options::getTemporaryDirectory();
@@ -123,8 +123,8 @@ class Php extends \C5TL\Parser
             }
             $line = 'xgettext';
             $line .= ' --default-domain=messages'; // Domain
-            $line .= ' --output=' . escapeshellarg(basename($tempFilePot)); // Output .pot file name
-            $line .= ' --output-dir=' . escapeshellarg(dirname($tempFilePot)); // Output .pot folder name
+            $line .= ' --output='.escapeshellarg(basename($tempFilePot)); // Output .pot file name
+            $line .= ' --output-dir='.escapeshellarg(dirname($tempFilePot)); // Output .pot folder name
             $line .= ' --language=PHP'; // Source files are in php
             $line .= ' --from-code=UTF-8'; // Source files are in utf-8
             $line .= ' --add-comments=i18n'; // Place comment blocks preceding keyword lines in output file if they start with '// i18n: '
@@ -134,7 +134,7 @@ class Php extends \C5TL\Parser
             $line .= ' --keyword=tc:1c,2'; // Look for the first argument of the "tc" function for extracting translation context, and the second argument is the translatable text in singular form.
             $line .= ' --no-escape'; // Do not use C escapes in output
             $line .= ' --add-location'; // Generate '#: filename:line' lines
-            $line .= ' --files-from=' . escapeshellarg($tempFileList); // Get list of input files from file
+            $line .= ' --files-from='.escapeshellarg($tempFileList); // Get list of input files from file
             $line .= ' 2>&1';
             $output = array();
             $rc = null;
@@ -148,7 +148,7 @@ class Php extends \C5TL\Parser
                 $output = array();
             }
             if ($rc !== 0) {
-                throw new \Exception("xgettext failed: " . implode("\n", $output));
+                throw new \Exception("xgettext failed: ".implode("\n", $output));
             }
             $newTranslations = \Gettext\Translations::fromPoFile($tempFilePot);
             @unlink($tempFilePot);
@@ -176,7 +176,7 @@ class Php extends \C5TL\Parser
      */
     protected function parseDirectoryDo_php($rootDirectory, $phpFiles)
     {
-        $prefix = $rootDirectory . '/';
+        $prefix = $rootDirectory.'/';
         $originalFunctions = \Gettext\Extractors\PhpCode::$functions;
         \Gettext\Extractors\PhpCode::$functions['t'] = '__';
         \Gettext\Extractors\PhpCode::$functions['t2'] = 'n__';

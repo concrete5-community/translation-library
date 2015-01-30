@@ -30,7 +30,7 @@ class AttributeKeyCategory extends DynamicItem
             $akcClass = '\Concrete\Core\Attribute\Key\Category';
         }
         if (class_exists($akcClass, true) && method_exists($akcClass, 'getList')) {
-            foreach (call_user_func($akcClass .'::getList') as $akc) {
+            foreach (call_user_func($akcClass.'::getList') as $akc) {
                 $akcHandle = $akc->getAttributeKeyCategoryHandle();
                 self::addTranslation($translations, isset($akcNameMap[$akcHandle]) ? $akcNameMap[$akcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $akcHandle)));
             }

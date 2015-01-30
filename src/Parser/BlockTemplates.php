@@ -30,7 +30,7 @@ class BlockTemplates extends \C5TL\Parser
         $templateHandles = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
-            $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
+            $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix.$child);
             $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)blocks/\w+/(?:templates|composer)/(\w+)$%', $fullpath, $matches)) {
                 if (!isset($templateHandles[$matches[1]])) {
@@ -48,7 +48,7 @@ class BlockTemplates extends \C5TL\Parser
                             if (!isset($templateHandles[$matches[1]])) {
                                 $templateHandles[$matches[1]] = array();
                             }
-                            $templateHandles[$matches[1]][] = $shownChild . "/$file";
+                            $templateHandles[$matches[1]][] = $shownChild."/$file";
                         }
                     }
                 }

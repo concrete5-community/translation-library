@@ -41,7 +41,7 @@ class PermissionKeyCategory extends DynamicItem
             $pkcClass = '\Concrete\Core\Permission\Category';
         }
         if (class_exists($pkcClass, true) && method_exists($pkcClass, 'getList')) {
-            foreach (call_user_func($pkcClass .'::getList') as $pkc) {
+            foreach (call_user_func($pkcClass.'::getList') as $pkc) {
                 $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
                 self::addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $pkcHandle)));
             }

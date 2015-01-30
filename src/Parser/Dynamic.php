@@ -28,7 +28,7 @@ class Dynamic extends \C5TL\Parser
     protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
     {
         foreach (self::getAllDynamicItemClasses() as $fq) {
-            call_user_func($fq . '::parse', $translations, $concrete5version);
+            call_user_func($fq.'::parse', $translations, $concrete5version);
         }
     }
 
@@ -39,11 +39,11 @@ class Dynamic extends \C5TL\Parser
     private static function getAllDynamicItemClasses()
     {
         $result = array();
-        $dir = __DIR__ . '/DynamicItem';
+        $dir = __DIR__.'/DynamicItem';
         if (is_dir($dir) && is_readable($dir)) {
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
-                    $result[] = '\\' . __NAMESPACE__ . '\\DynamicItem\\' . $matches[1];
+                    $result[] = '\\'.__NAMESPACE__.'\\DynamicItem\\'.$matches[1];
                 }
             }
         }

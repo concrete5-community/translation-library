@@ -147,7 +147,7 @@ abstract class Parser
         if (!isset(self::$cache[__FUNCTION__])) {
             self::$cache[__FUNCTION__] = array();
         }
-        $cacheKey = $rootDirectory . '*' . ($exclude3rdParty ? '1' : '0');
+        $cacheKey = $rootDirectory.'*'.($exclude3rdParty ? '1' : '0');
         if (!isset(self::$cache[__FUNCTION__][$cacheKey])) {
             self::$cache[__FUNCTION__][$cacheKey] = static::getDirectoryStructureDo('', $rootDirectory, $exclude3rdParty);
         }
@@ -167,7 +167,7 @@ abstract class Parser
     {
         $thisRoot = $rootDirectory;
         if ($relativePath !== '') {
-            $thisRoot .= '/' . $relativePath;
+            $thisRoot .= '/'.$relativePath;
         }
         $subDirs = array();
         $hDir = @opendir($thisRoot);
@@ -178,7 +178,7 @@ abstract class Parser
             if ($entry[0] === '.') {
                 continue;
             }
-            $fullPath = $thisRoot . '/' . $entry;
+            $fullPath = $thisRoot.'/'.$entry;
             if (!is_dir($fullPath)) {
                 continue;
             }
@@ -207,11 +207,11 @@ abstract class Parser
     final public static function getAllParsers()
     {
         $result = array();
-        $dir = __DIR__ . '/Parser';
+        $dir = __DIR__.'/Parser';
         if (is_dir($dir) && is_readable($dir)) {
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
-                    $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . $matches[1];
+                    $fqClassName = '\\'.__NAMESPACE__.'\\Parser\\'.$matches[1];
                     $result[] = new $fqClassName();
                 }
             }
@@ -223,7 +223,7 @@ abstract class Parser
     final public static function getByHandle($parserHandle)
     {
         $parser = null;
-        $fqClassName = '\\'.__NAMESPACE__ .'\\Parser\\'.static::camelifyString($parserHandle);
+        $fqClassName = '\\'.__NAMESPACE__.'\\Parser\\'.static::camelifyString($parserHandle);
         if (class_exists($fqClassName, true)) {
             $parser = new $fqClassName();
         }
