@@ -369,7 +369,7 @@ class Cif extends \C5TL\Parser
         }
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
-                if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && isset($childnodesLimit[$child->tagName]))) {
+                if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && in_array($child->tagName, $childnodesLimit))) {
                     static::parseXmlNode($translations, $filenameRel, $child, $path);
                 }
             }
