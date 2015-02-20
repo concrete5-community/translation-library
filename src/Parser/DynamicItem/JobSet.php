@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class JobSet extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('Job set names') : 'Job set names';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\Job\Set';
     }
@@ -17,11 +25,11 @@ class JobSet extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         if (class_exists('\JobSet', true)) {
             foreach (\JobSet::getList() as $js) {
-                self::addTranslation($translations, $js->getJobSetName(), 'JobSetName');
+                $this->addTranslation($translations, $js->getJobSetName(), 'JobSetName');
             }
         }
     }

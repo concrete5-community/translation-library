@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class AttributeType extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('Attribute type names') : 'Attribute type names';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\Attribute\Type';
     }
@@ -17,11 +25,11 @@ class AttributeType extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         if (class_exists('\AttributeType', true)) {
             foreach (\AttributeType::getList() as $at) {
-                self::addTranslation($translations, $at->getAttributeTypeName(), 'AttributeTypeName');
+                $this->addTranslation($translations, $at->getAttributeTypeName(), 'AttributeTypeName');
             }
         }
     }

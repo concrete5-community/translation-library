@@ -43,12 +43,13 @@ abstract class Parser
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
+     * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`.
      * @example If you want to parse a concrete5 package, you should call `parseDirectory('PathToThePackageFolder', 'packages/YourPackageHandle')`.
      */
-    final public function parseDirectory($rootDirectory, $relativePath, $translations = null)
+    final public function parseDirectory($rootDirectory, $relativePath, $translations = null, $subParsersFilter = false)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -69,7 +70,7 @@ abstract class Parser
             throw new \Exception("Directory not readable: $dir");
         }
         $dirRel = is_string($relativePath) ? trim(str_replace(DIRECTORY_SEPARATOR, '/', $relativePath), '/') : '';
-        $this->parseDirectoryDo($translations, $dir, $dirRel);
+        $this->parseDirectoryDo($translations, $dir, $dirRel, $subParsersFilter);
 
         return $translations;
     }
@@ -79,8 +80,9 @@ abstract class Parser
      * @param \Gettext\Translations $translations Found translatable strings will be appended here
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath The relative path (translations references will be prepended with this path).
+     * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
     {
         throw new \Exception('This parser does not support filesystem parsing');
     }
@@ -97,10 +99,11 @@ abstract class Parser
     /**
      * Extracts translations from a running concrete5 instance.
      * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
+     * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      */
-    final public function parseRunningConcrete5($translations = null)
+    final public function parseRunningConcrete5($translations = null, $subParsersFilter = false)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -112,7 +115,7 @@ abstract class Parser
         if ($runningVersion === '') {
             throw new \Exception('Unable to determine the current working directory');
         }
-        $this->parseRunningConcrete5Do($translations, $runningVersion);
+        $this->parseRunningConcrete5Do($translations, $runningVersion, $subParsersFilter);
 
         return $translations;
     }
@@ -121,10 +124,20 @@ abstract class Parser
      * Final implementation of {@link \C5TL\Parser::parseRunningConcrete5()}
      * @param \Gettext\Translations $translations Found translatable strings will be appended here
      * @param string $concrete5version The version of the running concrete5 instance.
+     * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
      */
-    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
+    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version, $subParsersFilter)
     {
         throw new \Exception('This parser does not support parsing a running concrete5 instance');
+    }
+
+    /**
+     * Returns a list of handles of sub-parsers (if any).
+     * @return array
+     */
+    public function getSubParserHandles()
+    {
+        return array();
     }
 
     /**
@@ -209,6 +222,7 @@ abstract class Parser
         $result = array();
         $dir = __DIR__.'/Parser';
         if (is_dir($dir) && is_readable($dir)) {
+            $matches = null;
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
                     $fqClassName = '\\'.__NAMESPACE__.'\\Parser\\'.$matches[1];
@@ -255,8 +269,9 @@ abstract class Parser
      * Concatenates words with an underscore and lowercases them (eg from 'HiThere' or 'HiThere' to 'hi_there'). Upper case words are prepended with an underscore too.
      * @param string $string
      * @return string
+     * @internal
      */
-    final protected static function handlifyString($string)
+    final public static function handlifyString($string)
     {
         $string = preg_replace('/\W+/', '_', $string);
         $string = preg_replace('/([A-Z])/', '_$1', $string);

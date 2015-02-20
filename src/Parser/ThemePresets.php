@@ -11,7 +11,7 @@ class ThemePresets extends \C5TL\Parser
      */
     public function getParserName()
     {
-        return 'Themes presets';
+        return function_exists('t') ? t('Themes presets') : 'Themes presets';
     }
 
     /**
@@ -25,10 +25,11 @@ class ThemePresets extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
     {
         $themesPresets = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
+        $matches = null;
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
             $presetsAbsDirectory = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)themes/\w+/css/presets$%', $presetsAbsDirectory, $matches)) {

@@ -11,7 +11,7 @@ class Php extends \C5TL\Parser
      */
     public function getParserName()
     {
-        return 'PHP Parser';
+        return function_exists('t') ? t('PHP Parser') : 'PHP Parser';
     }
 
     /**
@@ -25,7 +25,7 @@ class Php extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
     {
         $phpFiles = array();
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {

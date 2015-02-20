@@ -11,7 +11,7 @@ class BlockTemplates extends \C5TL\Parser
      */
     public function getParserName()
     {
-        return 'Block templates';
+        return function_exists('t') ? t('Block templates') : 'Block templates';
     }
 
     /**
@@ -25,10 +25,11 @@ class BlockTemplates extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
     {
         $templateHandles = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
+        $matches = null;
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
             $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix.$child);
             $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";

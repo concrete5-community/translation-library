@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class PermissionKeyCategory extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('Permission key category names') : 'Permission key category names';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\Permission\Category';
     }
@@ -17,7 +25,7 @@ class PermissionKeyCategory extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         $pkcNameMap = array(
             'page' => 'Page',
@@ -43,7 +51,7 @@ class PermissionKeyCategory extends DynamicItem
         if (class_exists($pkcClass, true) && method_exists($pkcClass, 'getList')) {
             foreach (call_user_func($pkcClass.'::getList') as $pkc) {
                 $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
-                self::addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $pkcHandle)));
+                $this->addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $pkcHandle)));
             }
         }
     }

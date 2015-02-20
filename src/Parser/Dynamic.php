@@ -11,7 +11,7 @@ class Dynamic extends \C5TL\Parser
      */
     public function getParserName()
     {
-        return 'Block templates';
+        return function_exists('t') ? t('Block templates') : 'Block templates';
     }
 
     /**
@@ -25,25 +25,42 @@ class Dynamic extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseRunningConcrete5Do()
      */
-    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version)
+    protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version, $subParsersFilter)
     {
-        foreach (self::getAllDynamicItemClasses() as $fq) {
-            call_user_func($fq.'::parse', $translations, $concrete5version);
+        foreach ($this->getSubParsers() as $dynamicItemParser) {
+            if ((!is_array($subParsersFilter)) || in_array($dynamicItemParser->getDynamicItemsParserHandler(), $subParsersFilter)) {
+                $dynamicItemParser->parse($translations, $concrete5version);
+            }
         }
     }
 
     /**
-     * Returns the fully-qualified class names of all the DynamicItems
-     * @return array[string]
+     * @see \C5TL\Parser::getSubParserHandles()
      */
-    private static function getAllDynamicItemClasses()
+    public function getSubParserHandles()
+    {
+        $result = array();
+        foreach ($this->getSubParsers() as $dynamicItemParser) {
+            $result[] = $dynamicItemParser->getDynamicItemsParserHandler();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the fully-qualified class names of all the sub-parsers
+     * @return array[\C5TL\Parser\DynamicItem\DynamicItem]
+     */
+    private function getSubParsers()
     {
         $result = array();
         $dir = __DIR__.'/DynamicItem';
         if (is_dir($dir) && is_readable($dir)) {
+            $matches = null;
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
-                    $result[] = '\\'.__NAMESPACE__.'\\DynamicItem\\'.$matches[1];
+                    $fqClassName = '\\'.__NAMESPACE__.'\\DynamicItem\\'.$matches[1];
+                    $result[] = new $fqClassName();
                 }
             }
         }

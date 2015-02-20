@@ -11,7 +11,7 @@ class Cif extends \C5TL\Parser
      */
     public function getParserName()
     {
-        return 'CIF XML Parser';
+        return function_exists('t') ? t('CIF XML Parser') : 'CIF XML Parser';
     }
 
     /**
@@ -25,7 +25,7 @@ class Cif extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
     {
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {

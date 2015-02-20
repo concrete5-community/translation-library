@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class PermissionAccessEntityType extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('Access entity type names') : 'Access entity type names';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\Permission\Access\Entity\Type';
     }
@@ -17,11 +25,11 @@ class PermissionAccessEntityType extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         if (class_exists('\PermissionAccessEntityType', true) && method_exists('\PermissionAccessEntityType', 'getList')) {
             foreach (\PermissionAccessEntityType::getList() as $aet) {
-                self::addTranslation($translations, $aet->getAccessEntityTypeName(), 'PermissionAccessEntityTypeName');
+                $this->addTranslation($translations, $aet->getAccessEntityTypeName(), 'PermissionAccessEntityTypeName');
             }
         }
     }

@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class AttributeKeyCategory extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('Attribute categories') : 'Attribute categories';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\Attribute\Key\Category';
     }
@@ -17,7 +25,7 @@ class AttributeKeyCategory extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         $akcNameMap = array(
             'collection' => 'Page attributes',
@@ -32,7 +40,7 @@ class AttributeKeyCategory extends DynamicItem
         if (class_exists($akcClass, true) && method_exists($akcClass, 'getList')) {
             foreach (call_user_func($akcClass.'::getList') as $akc) {
                 $akcHandle = $akc->getAttributeKeyCategoryHandle();
-                self::addTranslation($translations, isset($akcNameMap[$akcHandle]) ? $akcNameMap[$akcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $akcHandle)));
+                $this->addTranslation($translations, isset($akcNameMap[$akcHandle]) ? $akcNameMap[$akcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $akcHandle)));
             }
         }
     }

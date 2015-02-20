@@ -7,9 +7,17 @@ namespace C5TL\Parser\DynamicItem;
 class GroupSet extends DynamicItem
 {
     /**
+     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     */
+    public function getParsedItemNames()
+    {
+        return function_exists('t') ? t('User group set names') : 'User group set names';
+    }
+
+    /**
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
-    protected static function getClassNameForExtractor()
+    protected function getClassNameForExtractor()
     {
         return '\Concrete\Core\User\Group\GroupSet';
     }
@@ -17,11 +25,11 @@ class GroupSet extends DynamicItem
     /**
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
-    public static function parseManual(\Gettext\Translations $translations, $concrete5version)
+    public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         if (class_exists('\GroupSet', true)) {
             foreach (\GroupSet::getList() as $gs) {
-                self::addTranslation($translations, $as->getGroupSetName(), 'GroupSetName');
+                $this->addTranslation($translations, $gs->getGroupSetName(), 'GroupSetName');
             }
         }
     }
