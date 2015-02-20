@@ -35,23 +35,10 @@ class Dynamic extends \C5TL\Parser
     }
 
     /**
-     * @see \C5TL\Parser::getSubParserHandles()
-     */
-    public function getSubParserHandles()
-    {
-        $result = array();
-        foreach ($this->getSubParsers() as $dynamicItemParser) {
-            $result[] = $dynamicItemParser->getDynamicItemsParserHandler();
-        }
-
-        return $result;
-    }
-
-    /**
      * Returns the fully-qualified class names of all the sub-parsers
      * @return array[\C5TL\Parser\DynamicItem\DynamicItem]
      */
-    private function getSubParsers()
+    public function getSubParsers()
     {
         $result = array();
         $dir = __DIR__.'/DynamicItem';
@@ -60,7 +47,9 @@ class Dynamic extends \C5TL\Parser
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
                     $fqClassName = '\\'.__NAMESPACE__.'\\DynamicItem\\'.$matches[1];
-                    $result[] = new $fqClassName();
+                    $instance = new $fqClassName();
+                    /* @var $instance \C5TL\Parser\DynamicItem\DynamicItem */
+                    $result[$instance->getDynamicItemsParserHandler()] = $instance;
                 }
             }
         }

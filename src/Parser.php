@@ -135,7 +135,7 @@ abstract class Parser
      * Returns a list of handles of sub-parsers (if any).
      * @return array
      */
-    public function getSubParserHandles()
+    public function getSubParsers()
     {
         return array();
     }
