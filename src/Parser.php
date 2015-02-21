@@ -44,7 +44,7 @@ abstract class Parser
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
-     * @param bool $exclude3rdParty=true Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
+     * @param bool $exclude3rdParty Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`.
@@ -82,8 +82,9 @@ abstract class Parser
      * @param string $rootDirectory The base directory where we start looking translations from.
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
+     * @param bool $exclude3rdParty Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty').
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
         throw new \Exception('This parser does not support filesystem parsing');
     }
