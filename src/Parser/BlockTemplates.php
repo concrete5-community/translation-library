@@ -25,12 +25,12 @@ class BlockTemplates extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
         $templateHandles = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         $matches = null;
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix.$child);
             $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)blocks/\w+/(?:templates|composer)/(\w+)$%', $fullpath, $matches)) {

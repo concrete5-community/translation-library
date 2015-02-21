@@ -25,10 +25,10 @@ class Php extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
         $phpFiles = array();
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -94,7 +94,7 @@ class Php extends \C5TL\Parser
      * @throws \Exception Throws an \Exception in case of problems
      * @return \Gettext\Translations
      */
-    protected function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
+    protected static function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
     {
         $initialDirectory = @getcwd();
         if ($initialDirectory === false) {
@@ -174,7 +174,7 @@ class Php extends \C5TL\Parser
      * @throws \Exception Throws an \Exception in case of problems
      * @return \Gettext\Translations
      */
-    protected function parseDirectoryDo_php($rootDirectory, $phpFiles)
+    protected static function parseDirectoryDo_php($rootDirectory, $phpFiles)
     {
         $prefix = $rootDirectory.'/';
         $originalFunctions = \Gettext\Extractors\PhpCode::$functions;

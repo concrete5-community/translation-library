@@ -25,12 +25,12 @@ class ThemePresets extends \C5TL\Parser
     /**
      * @see \C5TL\Parser::parseDirectoryDo()
      */
-    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter)
+    protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
         $themesPresets = array();
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         $matches = null;
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory)) as $child) {
+        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $presetsAbsDirectory = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)themes/\w+/css/presets$%', $presetsAbsDirectory, $matches)) {
                 $dirList = @scandir($presetsAbsDirectory);

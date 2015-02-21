@@ -44,12 +44,13 @@ abstract class Parser
      * @param string $relativePath The relative path (translations references will be prepended with this path).
      * @param \Gettext\Translations|null=null $translations The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
      * @param array|false $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
+     * @param bool $exclude3rdParty=true Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
      * @throws \Exception Throws an \Exception in case of errors.
      * @return \Gettext\Translations
      * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`.
      * @example If you want to parse a concrete5 package, you should call `parseDirectory('PathToThePackageFolder', 'packages/YourPackageHandle')`.
      */
-    final public function parseDirectory($rootDirectory, $relativePath, $translations = null, $subParsersFilter = false)
+    final public function parseDirectory($rootDirectory, $relativePath, $translations = null, $subParsersFilter = false, $exclude3rdParty = true)
     {
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
@@ -70,7 +71,7 @@ abstract class Parser
             throw new \Exception("Directory not readable: $dir");
         }
         $dirRel = is_string($relativePath) ? trim(str_replace(DIRECTORY_SEPARATOR, '/', $relativePath), '/') : '';
-        $this->parseDirectoryDo($translations, $dir, $dirRel, $subParsersFilter);
+        $this->parseDirectoryDo($translations, $dir, $dirRel, $subParsersFilter, $exclude3rdParty);
 
         return $translations;
     }
