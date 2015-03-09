@@ -78,7 +78,7 @@ class Php extends \C5TL\Parser
             $m = null;
             $translation->deleteExtractedComments();
             foreach ($extractedComments as $extractedComment) {
-                if (preg_match('/^.\\s+i18n:?\\s*(\\S.*^)\\s*$/', $extractedComment, $m)) {
+                if (preg_match('/^\s*i18n:?\s*(.*)\s*$/s', $extractedComment, $m)) {
                     $translation->addExtractedComment($m[1]);
                 } else {
                     $translation->addExtractedComment($extractedComment);
