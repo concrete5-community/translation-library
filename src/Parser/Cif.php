@@ -134,6 +134,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/pages/page/attributes':
             case '/concrete5-cif/pages/page/attributes/attributekey':
             case '/concrete5-cif/pages/page/attributes/attributekey/topics':
+            case '/concrete5-cif/pages/page/attributes/attributekey/topics/topic':
             case '/concrete5-cif/pages/page/attributes/attributekey/value':
             case '/concrete5-cif/pages/page/attributes/attributekey/value/fID':
             case '/concrete5-cif/pages/page/attributes/attributekey/value/option':
@@ -360,9 +361,6 @@ class Cif extends \C5TL\Parser
                 break;
             case '/concrete5-cif/pagetypes/pagetype/composer/formlayout/set/control':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'custom-label', 'PageTypeComposerFormLayoutSetControlCustomLabel');
-                break;
-            case '/concrete5-cif/pages/page/attributes/attributekey/topics/topic':
-                static::parseXmlNodeValue($translations, $filenameRel, $node, 'Topic');
                 break;
             default:
                 throw new \Exception('Unknown tag name '.$path.' in '.$filenameRel."\n\nNode:\n".$node->ownerDocument->saveXML($node));
