@@ -174,7 +174,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/stacks':
             case '/concrete5-cif/stacks/stack/area/block/data':
             case '/concrete5-cif/stacks/stack/area/block/link':
-            case '/concrete5-cif/stacks/stack/area/blocks';
+            case '/concrete5-cif/stacks/stack/area/blocks':
             case '/concrete5-cif/systemcaptcha':
             case '/concrete5-cif/systemcontenteditorsnippets':
             case '/concrete5-cif/taskpermissions':
@@ -206,15 +206,15 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/flag_types':
             case '/concrete5-cif/gatheringitemtemplatetypes':
             case '/concrete5-cif/pages/page/area/block/arealayout/columns/column/block/data/record':
-            case '/concrete5-cif/pages/page/area/blocks';
-            case '/concrete5-cif/pages/page/area/style';
+            case '/concrete5-cif/pages/page/area/blocks':
+            case '/concrete5-cif/pages/page/area/style':
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/block':
-            case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/blocks/block';
+            case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/blocks/block':
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/style':
             case '/concrete5-cif/pagetypes/pagetype/page/area/block/data/record':
             case '/concrete5-cif/sociallinks':
             case '/concrete5-cif/stacks/stack/area/block/data/record':
-            case '/concrete5-cif/stacks/stack/area/blocks/block';
+            case '/concrete5-cif/stacks/stack/area/blocks/block':
                 // Skip this node and its children
                 return;
             case '/concrete5-cif/pages/page/area/block':
@@ -245,7 +245,7 @@ class Cif extends \C5TL\Parser
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ThumbnailTypeName');
                 break;
             case '/concrete5-cif/trees/tree/topic_category':
-                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TopicCategoryName');
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TreeNodeCategoryName');
                 break;
             case '/concrete5-cif/trees/tree/topic':
             case '/concrete5-cif/trees/tree/topic_category/topic':
