@@ -363,7 +363,9 @@ class Cif extends \C5TL\Parser
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'custom-label', 'PageTypeComposerFormLayoutSetControlCustomLabel');
                 break;
             default:
-                throw new \Exception('Unknown tag name '.$path.' in '.$filenameRel."\n\nNode:\n".$node->ownerDocument->saveXML($node));
+                if (strpos($filenameRel, 'packages/') !== false) {
+                    throw new \Exception('Unknown tag name '.$path.' in '.$filenameRel."\n\nNode:\n".$node->ownerDocument->saveXML($node));
+                }
         }
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
