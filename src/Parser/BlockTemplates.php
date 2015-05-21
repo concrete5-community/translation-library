@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser;
 
 /**
- * Extract translatable strings from block type templates
+ * Extract translatable strings from block type templates.
  */
 class BlockTemplates extends \C5TL\Parser
 {

@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Extract translatable data from AttributeTypes
+ * Extract translatable data from AttributeTypes.
  */
 class AttributeType extends DynamicItem
 {

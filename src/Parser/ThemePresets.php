@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser;
 
 /**
- * Extract translatable strings from themes presets
+ * Extract translatable strings from themes presets.
  */
 class ThemePresets extends \C5TL\Parser
 {

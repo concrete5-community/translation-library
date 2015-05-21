@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser;
 
 /**
- * Extract translatable strings from PHP files (functions t(), tc() and t2())
+ * Extract translatable strings from PHP files (functions t(), tc() and t2()).
  */
 class Php extends \C5TL\Parser
 {
@@ -88,10 +89,13 @@ class Php extends \C5TL\Parser
     }
 
     /**
-     * Extracts translatable strings from PHP files with xgettext
-     * @param string $rootDirectory The base root directory
-     * @param array[string] $phpFiles The relative paths to the PHP files to be parsed
+     * Extracts translatable strings from PHP files with xgettext.
+     *
+     * @param string        $rootDirectory The base root directory
+     * @param array[string] $phpFiles      The relative paths to the PHP files to be parsed
+     *
      * @throws \Exception Throws an \Exception in case of problems
+     *
      * @return \Gettext\Translations
      */
     protected static function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
@@ -114,7 +118,7 @@ class Php extends \C5TL\Parser
                 if (isset($php_errormsg) && $php_errormsg) {
                     throw new \Exception("Error writing a temporary file: $php_errormsg");
                 } else {
-                    throw new \Exception("Error writing a temporary file");
+                    throw new \Exception('Error writing a temporary file');
                 }
             }
             $tempFilePot = @tempnam($tempDirectory, 'cil');
@@ -148,7 +152,7 @@ class Php extends \C5TL\Parser
                 $output = array();
             }
             if ($rc !== 0) {
-                throw new \Exception("xgettext failed: ".implode("\n", $output));
+                throw new \Exception('xgettext failed: '.implode("\n", $output));
             }
             $newTranslations = \Gettext\Translations::fromPoFile($tempFilePot);
             @unlink($tempFilePot);
@@ -168,10 +172,13 @@ class Php extends \C5TL\Parser
     }
 
     /**
-     * Extracts translatable strings from PHP files with xgettext
-     * @param string $rootDirectory The base root directory
-     * @param array[string] $phpFiles The relative paths to the PHP files to be parsed
+     * Extracts translatable strings from PHP files with xgettext.
+     *
+     * @param string        $rootDirectory The base root directory
+     * @param array[string] $phpFiles      The relative paths to the PHP files to be parsed
+     *
      * @throws \Exception Throws an \Exception in case of problems
+     *
      * @return \Gettext\Translations
      */
     protected static function parseDirectoryDo_php($rootDirectory, $phpFiles)

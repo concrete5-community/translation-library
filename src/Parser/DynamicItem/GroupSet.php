@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Extract translatable data from GroupSets
+ * Extract translatable data from GroupSets.
  */
 class GroupSet extends DynamicItem
 {

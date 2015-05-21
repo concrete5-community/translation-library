@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser;
 
 /**
- * Extract translatable strings from CIF (Content Import Format) xml files
+ * Extract translatable strings from CIF (Content Import Format) xml files.
  */
 class Cif extends \C5TL\Parser
 {
@@ -47,10 +48,12 @@ class Cif extends \C5TL\Parser
     }
 
     /**
-     * Parses an XML CIF file and extracts translatable strings
+     * Parses an XML CIF file and extracts translatable strings.
+     *
      * @param \Gettext\Translations $translations
-     * @param string $realPath
-     * @param string $shownPath
+     * @param string                $realPath
+     * @param string                $shownPath
+     *
      * @throws \Exception
      */
     private static function parseXml(\Gettext\Translations $translations, $realPath, $shownPath)
@@ -74,9 +77,10 @@ class Cif extends \C5TL\Parser
 
     /** Parse an xml node and retrieves any associated POEntry.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string $filenameRel The relative file name of the xml file being read.
-     * @param \DOMNode $node The current node.
-     * @param string $prePath The path of the node containing the current node.
+     * @param string                $filenameRel  The relative file name of the xml file being read.
+     * @param \DOMNode              $node         The current node.
+     * @param string                $prePath      The path of the node containing the current node.
+     *
      * @throws \Exception Throws an \Exception in case of errors.
      */
     private static function parseXmlNode(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $prePath)
@@ -370,7 +374,7 @@ class Cif extends \C5TL\Parser
         }
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {
-                if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && in_array($child->tagName, $childnodesLimit))) {
+                if ((!isset($childnodesLimit)) || (is_a($child, '\DOMElement') && in_array((string) $child->tagName, $childnodesLimit, true))) {
                     static::parseXmlNode($translations, $filenameRel, $child, $path);
                 }
             }
@@ -378,11 +382,11 @@ class Cif extends \C5TL\Parser
     }
 
     /** Parse a node attribute and create a POEntry item if it has a value.
-     * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string $filenameRel The relative file name of the xml file being read.
-     * @param \DOMNode $node The current node.
-     * @param string $attributeName The name of the attribute.
-     * @param string $context='' The translation context.
+     * @param \Gettext\Translations $translations  Will be populated with found entries.
+     * @param string                $filenameRel   The relative file name of the xml file being read.
+     * @param \DOMNode              $node          The current node.
+     * @param string                $attributeName The name of the attribute.
+     * @param string                $context=''    The translation context.
      */
     private static function readXmlNodeAttribute(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $attributeName, $context = '')
     {
@@ -395,9 +399,9 @@ class Cif extends \C5TL\Parser
 
     /** Parse a node attribute which contains the keywords for a page.
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string $filenameRel The relative file name of the xml file being read.
-     * @param \DOMNode $node The current node.
-     * @param string $pageUrl The url of the page for which the keywords are for.
+     * @param string                $filenameRel  The relative file name of the xml file being read.
+     * @param \DOMNode              $node         The current node.
+     * @param string                $pageUrl      The url of the page for which the keywords are for.
      */
     private static function readXmlPageKeywords(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $pageUrl)
     {
@@ -414,10 +418,11 @@ class Cif extends \C5TL\Parser
 
     /**
      *  Parse a node value and create a POEntry item if it has a value.
+     *
      * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string $filenameRel The relative file name of the xml file being read.
-     * @param \DOMNode $node The current node.
-     * @param string $context='' The translation context.
+     * @param string                $filenameRel  The relative file name of the xml file being read.
+     * @param \DOMNode              $node         The current node.
+     * @param string                $context=''   The translation context.
      */
     private static function parseXmlNodeValue(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $context = '')
     {

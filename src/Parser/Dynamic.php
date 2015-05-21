@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser;
 
 /**
- * Extract translatable strings from block type templates
+ * Extract translatable strings from block type templates.
  */
 class Dynamic extends \C5TL\Parser
 {
@@ -28,14 +29,15 @@ class Dynamic extends \C5TL\Parser
     protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version, $subParsersFilter)
     {
         foreach ($this->getSubParsers() as $dynamicItemParser) {
-            if ((!is_array($subParsersFilter)) || in_array($dynamicItemParser->getDynamicItemsParserHandler(), $subParsersFilter)) {
+            if ((!is_array($subParsersFilter)) || in_array($dynamicItemParser->getDynamicItemsParserHandler(), $subParsersFilter, true)) {
                 $dynamicItemParser->parse($translations, $concrete5version);
             }
         }
     }
 
     /**
-     * Returns the fully-qualified class names of all the sub-parsers
+     * Returns the fully-qualified class names of all the sub-parsers.
+     *
      * @return array[\C5TL\Parser\DynamicItem\DynamicItem]
      */
     public function getSubParsers()

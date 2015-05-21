@@ -1,20 +1,22 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Base class for all DynamicItem parsers
+ * Base class for all DynamicItem parsers.
  */
 abstract class DynamicItem
 {
     /**
-     * Return a short name of the items extracted by this DynamicItem
+     * Return a short name of the items extracted by this DynamicItem.
      */
     abstract public function getParsedItemNames();
 
     /**
      * Extract specific items from the running concrete5.
-     * @param \Gettext\Translations $translations Found translations will be appended here.
-     * @param string $concrete5version The version of the running concrete5 instance.
+     *
+     * @param \Gettext\Translations $translations     Found translations will be appended here.
+     * @param string                $concrete5version The version of the running concrete5 instance.
      */
     final public function parse(\Gettext\Translations $translations, $concrete5version)
     {
@@ -28,6 +30,7 @@ abstract class DynamicItem
 
     /**
      * Returns the fully qualified class name that extracts automatically strings.
+     *
      * @return string
      */
     protected function getClassNameForExtractor()
@@ -37,18 +40,20 @@ abstract class DynamicItem
 
     /**
      * Manual parsing of items.
-     * @param \Gettext\Translations $translations Found translations will be appended here.
-     * @param string $concrete5version The version of the running concrete5 instance.
+     *
+     * @param \Gettext\Translations $translations     Found translations will be appended here.
+     * @param string                $concrete5version The version of the running concrete5 instance.
      */
     protected function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
     }
 
     /**
-     * Adds a translation to the \Gettext\Translations object
+     * Adds a translation to the \Gettext\Translations object.
+     *
      * @param \Gettext\Translations $translations
-     * @param string $string
-     * @param string $context
+     * @param string                $string
+     * @param string                $context
      */
     final protected function addTranslation(\Gettext\Translations $translations, $string, $context = '')
     {
@@ -58,7 +63,7 @@ abstract class DynamicItem
     }
 
     /**
-     * Returns the handle of the DynamicItem handle
+     * Returns the handle of the DynamicItem handle.
      */
     final public function getDynamicItemsParserHandler()
     {

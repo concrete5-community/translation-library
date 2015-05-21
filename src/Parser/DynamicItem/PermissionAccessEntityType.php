@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Extract translatable data from PermissionAccessEntityTypes
+ * Extract translatable data from PermissionAccessEntityTypes.
  */
 class PermissionAccessEntityType extends DynamicItem
 {

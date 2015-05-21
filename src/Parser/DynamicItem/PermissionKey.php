@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Extract translatable data from PermissionKeys
+ * Extract translatable data from PermissionKeys.
  */
 class PermissionKey extends DynamicItem
 {

@@ -1,8 +1,9 @@
 <?php
+
 namespace C5TL\Parser\DynamicItem;
 
 /**
- * Extract translatable data from JobSets
+ * Extract translatable data from JobSets.
  */
 class JobSet extends DynamicItem
 {

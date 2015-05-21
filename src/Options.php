@@ -1,20 +1,24 @@
 <?php
+
 namespace C5TL;
 
 /**
- * Holds global options of C5TL
+ * Holds global options of C5TL.
  */
 class Options
 {
     /**
      * Currently configured temporary directory. If empty we'll try to detect it.
+     *
      * @var string
      */
     protected static $temporaryDirectory = '';
 
     /**
      * Returns the temporary directory.
+     *
      * @throws \Exception
+     *
      * @return string
      */
     public static function getTemporaryDirectory()
@@ -64,7 +68,8 @@ class Options
     }
 
     /**
-     * Sets the temporary directory
+     * Sets the temporary directory.
+     *
      * @param string $value Set to an empty string to detect the temporary directory
      */
     public static function setTemporaryDirectory($value)
