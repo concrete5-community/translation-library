@@ -73,6 +73,26 @@ class Cif extends \C5TL\Parser
                 static::parseXmlNode($translations, $shownPath, $xml->documentElement, '');
                 break;
         }
+
+        static::parseTranslatableBlockProperties($translations, $shownPath, $xml);
+
+    }
+
+    /**
+     * Extract all block record values where we've set translatable to true. Those properties are entered by the user
+     * in the sample content XML and should be translated
+     * @param \Gettext\Translations $translations Will be populated with found entries.
+     * @param string                $filenameRel  The relative file name of the xml file being read.
+     * @param \DOMDocument          $xml          The DOMDocument object on which we'll perform our search
+     */
+    private static function parseTranslatableBlockProperties(\Gettext\Translations $translations, $filenameRel, \DOMDocument $xml)
+    {
+        $xpath = new \DOMXpath($xml);
+
+        $elements = $xpath->query("//*[@translatable='true']");
+        foreach ($elements as $node) {
+            static::parseXmlNodeValue($translations, $filenameRel, $node, 'BlockRecordProperty');
+        }
     }
 
     /** Parse an xml node and retrieves any associated POEntry.
