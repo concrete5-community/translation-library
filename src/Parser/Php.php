@@ -78,7 +78,7 @@ class Php extends \C5TL\Parser
         if ($n > 0) {
             $m = null;
             $translation->deleteExtractedComments();
-            foreach ($extractedComments as $extractedComment) {
+            foreach (array_unique($extractedComments) as $extractedComment) {
                 if (preg_match('/^\s*i18n:?\s*(.*)\s*$/s', $extractedComment, $m)) {
                     $translation->addExtractedComment($m[1]);
                 } else {
@@ -184,6 +184,8 @@ class Php extends \C5TL\Parser
     protected static function parseDirectoryDo_php($rootDirectory, $phpFiles)
     {
         $prefix = $rootDirectory.'/';
+        $originalExtractComments = \Gettext\Extractors\PhpCode::$extractComments;
+        \Gettext\Extractors\PhpCode::$extractComments = 'i18n';
         $originalFunctions = \Gettext\Extractors\PhpCode::$functions;
         \Gettext\Extractors\PhpCode::$functions['t'] = '__';
         \Gettext\Extractors\PhpCode::$functions['t2'] = 'n__';
@@ -196,8 +198,10 @@ class Php extends \C5TL\Parser
                 $phpFiles
             );
             $newTranslations = \Gettext\Translations::fromPhpCodeFile($absFiles);
+            \Gettext\Extractors\PhpCode::$extractComments = $originalExtractComments;
             \Gettext\Extractors\PhpCode::$functions = $originalFunctions;
         } catch (\Exception $x) {
+            \Gettext\Extractors\PhpCode::$extractComments = $originalExtractComments;
             \Gettext\Extractors\PhpCode::$functions = $originalFunctions;
             throw $x;
         }
