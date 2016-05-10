@@ -173,6 +173,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/permissionkeys/permissionkey/access':
             case '/concrete5-cif/permissionkeys/permissionkey/access/group':
             case '/concrete5-cif/singlepages':
+            case '/concrete5-cif/singlepages/page/area/blocks':
             case '/concrete5-cif/singlepages/page/attributes':
             case '/concrete5-cif/singlepages/page/attributes/attributekey':
             case '/concrete5-cif/stacks':
@@ -216,6 +217,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/blocks/block':
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/style':
             case '/concrete5-cif/pagetypes/pagetype/page/area/block/data/record':
+            case '/concrete5-cif/singlepages/page/area/blocks/block':
             case '/concrete5-cif/sociallinks':
             case '/concrete5-cif/stacks/stack/area/block/data/record':
             case '/concrete5-cif/stacks/stack/area/blocks/block':
@@ -248,9 +250,11 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/thumbnailtypes/thumbnailtype':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'ThumbnailTypeName');
                 break;
+            case '/concrete5-cif/trees/tree/category':
             case '/concrete5-cif/trees/tree/topic_category':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TreeNodeCategoryName');
                 break;
+            case '/concrete5-cif/trees/tree/category/topic':
             case '/concrete5-cif/trees/tree/topic':
             case '/concrete5-cif/trees/tree/topic_category/topic':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'TopicName');
