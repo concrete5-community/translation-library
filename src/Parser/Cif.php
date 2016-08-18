@@ -206,6 +206,7 @@ class Cif extends \C5TL\Parser
                 break;
             case '/concrete5-cif/banned_words':
             case '/concrete5-cif/config':
+            case '/concrete5-cif/expressentities':
             case '/concrete5-cif/featurecategories':
             case '/concrete5-cif/features':
             case '/concrete5-cif/flag_types':
