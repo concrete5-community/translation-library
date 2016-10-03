@@ -34,6 +34,18 @@ abstract class Parser
     }
 
     /**
+     * Can this parser parse files of a specific concrete5 version?
+     *
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function canParseConcreteVersion($version)
+    {
+        return true;
+    }
+
+    /**
      * Does this parser can parse directories?
      *
      * @return bool
