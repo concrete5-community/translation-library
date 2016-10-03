@@ -34,7 +34,7 @@ class ConfigFiles extends \C5TL\Parser
      */
     public function canParseConcreteVersion($version)
     {
-        return version_compare($version, '5.7') >= 0;
+        return version_compare($version, '8.0.0b6') >= 0;
     }
 
     /**
@@ -44,10 +44,6 @@ class ConfigFiles extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $directoryAlternatives = array(
-            array('', 'application', 'concrete'),
-            array('config/generated_overrides', 'config'),
-        );
         switch ($relativePath) {
             case '':
                 $directoryAlternatives = array('application/config/generated_overrides', 'application/config', 'concrete/config');
