@@ -46,18 +46,18 @@ abstract class Parser
     /**
      * Extracts translations from a directory.
      *
-     * @param string                          $rootDirectory    The base directory where we start looking translations from.
-     * @param string                          $relativePath     The relative path (translations references will be prepended with this path).
-     * @param \Gettext\Translations|null=null $translations     The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
-     * @param array|false                     $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
+     * @param string                          $rootDirectory    The base directory where we start looking translations from
+     * @param string                          $relativePath     The relative path (translations references will be prepended with this path)
+     * @param \Gettext\Translations|null=null $translations     The translations object where the translatable strings will be added (if null we'll create a new Translations instance)
+     * @param array|false                     $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers)
      * @param bool                            $exclude3rdParty  Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
      *
-     * @throws \Exception Throws an \Exception in case of errors.
+     * @throws \Exception Throws an \Exception in case of errors
      *
      * @return \Gettext\Translations
      *
-     * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`.
-     * @example If you want to parse a concrete5 package, you should call `parseDirectory('PathToThePackageFolder', 'packages/YourPackageHandle')`.
+     * @example If you want to parse the concrete5 core directory, you should call `parseDirectory('PathToTheWebroot/concrete', 'concrete')`
+     * @example If you want to parse a concrete5 package, you should call `parseDirectory('PathToThePackageFolder', 'packages/YourPackageHandle')`
      */
     final public function parseDirectory($rootDirectory, $relativePath, $translations = null, $subParsersFilter = false, $exclude3rdParty = true)
     {
@@ -89,10 +89,10 @@ abstract class Parser
      * Final implementation of {@link \C5TL\Parser::parseDirectory()}.
      *
      * @param \Gettext\Translations $translations     Found translatable strings will be appended here
-     * @param string                $rootDirectory    The base directory where we start looking translations from.
-     * @param string                $relativePath     The relative path (translations references will be prepended with this path).
-     * @param array|false           $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
-     * @param bool                  $exclude3rdParty  Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty').
+     * @param string                $rootDirectory    The base directory where we start looking translations from
+     * @param string                $relativePath     The relative path (translations references will be prepended with this path)
+     * @param array|false           $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers)
+     * @param bool                  $exclude3rdParty  Exclude concrete5 3rd party directories (namely directories called 'vendor' and '3rdparty')
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
@@ -112,10 +112,10 @@ abstract class Parser
     /**
      * Extracts translations from a running concrete5 instance.
      *
-     * @param \Gettext\Translations|null=null $translations     The translations object where the translatable strings will be added (if null we'll create a new Translations instance).
-     * @param array|false                     $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
+     * @param \Gettext\Translations|null=null $translations     The translations object where the translatable strings will be added (if null we'll create a new Translations instance)
+     * @param array|false                     $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers)
      *
-     * @throws \Exception Throws an \Exception in case of errors.
+     * @throws \Exception Throws an \Exception in case of errors
      *
      * @return \Gettext\Translations
      */
@@ -140,8 +140,8 @@ abstract class Parser
      * Final implementation of {@link \C5TL\Parser::parseRunningConcrete5()}.
      *
      * @param \Gettext\Translations $translations     Found translatable strings will be appended here
-     * @param string                $concrete5version The version of the running concrete5 instance.
-     * @param array|false           $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers).
+     * @param string                $concrete5version The version of the running concrete5 instance
+     * @param array|false           $subParsersFilter A list of sub-parsers handles (set to false to use all the sub-parsers)
      */
     protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version, $subParsersFilter)
     {

@@ -76,12 +76,12 @@ class Cif extends \C5TL\Parser
     }
 
     /** Parse an xml node and retrieves any associated POEntry.
-     * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string                $filenameRel  The relative file name of the xml file being read.
-     * @param \DOMNode              $node         The current node.
-     * @param string                $prePath      The path of the node containing the current node.
+     * @param \Gettext\Translations $translations Will be populated with found entries
+     * @param string                $filenameRel  The relative file name of the xml file being read
+     * @param \DOMNode              $node         The current node
+     * @param string                $prePath      The path of the node containing the current node
      *
-     * @throws \Exception Throws an \Exception in case of errors.
+     * @throws \Exception Throws an \Exception in case of errors
      */
     private static function parseXmlNode(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $prePath)
     {
@@ -387,11 +387,11 @@ class Cif extends \C5TL\Parser
     }
 
     /** Parse a node attribute and create a POEntry item if it has a value.
-     * @param \Gettext\Translations $translations  Will be populated with found entries.
-     * @param string                $filenameRel   The relative file name of the xml file being read.
-     * @param \DOMNode              $node          The current node.
-     * @param string                $attributeName The name of the attribute.
-     * @param string                $context=''    The translation context.
+     * @param \Gettext\Translations $translations  Will be populated with found entries
+     * @param string                $filenameRel   The relative file name of the xml file being read
+     * @param \DOMNode              $node          The current node
+     * @param string                $attributeName The name of the attribute
+     * @param string                $context=''    The translation context
      */
     private static function readXmlNodeAttribute(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $attributeName, $context = '')
     {
@@ -403,10 +403,10 @@ class Cif extends \C5TL\Parser
     }
 
     /** Parse a node attribute which contains the keywords for a page.
-     * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string                $filenameRel  The relative file name of the xml file being read.
-     * @param \DOMNode              $node         The current node.
-     * @param string                $pageUrl      The url of the page for which the keywords are for.
+     * @param \Gettext\Translations $translations Will be populated with found entries
+     * @param string                $filenameRel  The relative file name of the xml file being read
+     * @param \DOMNode              $node         The current node
+     * @param string                $pageUrl      The url of the page for which the keywords are for
      */
     private static function readXmlPageKeywords(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $pageUrl)
     {
@@ -424,10 +424,10 @@ class Cif extends \C5TL\Parser
     /**
      *  Parse a node value and create a POEntry item if it has a value.
      *
-     * @param \Gettext\Translations $translations Will be populated with found entries.
-     * @param string                $filenameRel  The relative file name of the xml file being read.
-     * @param \DOMNode              $node         The current node.
-     * @param string                $context=''   The translation context.
+     * @param \Gettext\Translations $translations Will be populated with found entries
+     * @param string                $filenameRel  The relative file name of the xml file being read
+     * @param \DOMNode              $node         The current node
+     * @param string                $context=''   The translation context
      */
     private static function parseXmlNodeValue(\Gettext\Translations $translations, $filenameRel, \DOMNode $node, $context = '')
     {

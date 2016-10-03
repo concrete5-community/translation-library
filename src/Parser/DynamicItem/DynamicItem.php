@@ -15,8 +15,8 @@ abstract class DynamicItem
     /**
      * Extract specific items from the running concrete5.
      *
-     * @param \Gettext\Translations $translations     Found translations will be appended here.
-     * @param string                $concrete5version The version of the running concrete5 instance.
+     * @param \Gettext\Translations $translations     Found translations will be appended here
+     * @param string                $concrete5version The version of the running concrete5 instance
      */
     final public function parse(\Gettext\Translations $translations, $concrete5version)
     {
@@ -41,8 +41,8 @@ abstract class DynamicItem
     /**
      * Manual parsing of items.
      *
-     * @param \Gettext\Translations $translations     Found translations will be appended here.
-     * @param string                $concrete5version The version of the running concrete5 instance.
+     * @param \Gettext\Translations $translations     Found translations will be appended here
+     * @param string                $concrete5version The version of the running concrete5 instance
      */
     protected function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
