@@ -8,6 +8,8 @@ namespace C5TL\Parser;
 class Dynamic extends \C5TL\Parser
 {
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::getParserName()
      */
     public function getParserName()
@@ -16,6 +18,8 @@ class Dynamic extends \C5TL\Parser
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::canParseRunningConcrete5()
      */
     public function canParseRunningConcrete5()
@@ -24,6 +28,8 @@ class Dynamic extends \C5TL\Parser
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::parseRunningConcrete5Do()
      */
     protected function parseRunningConcrete5Do(\Gettext\Translations $translations, $concrete5version, $subParsersFilter)

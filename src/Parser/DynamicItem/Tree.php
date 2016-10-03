@@ -8,6 +8,8 @@ namespace C5TL\Parser\DynamicItem;
 class Tree extends DynamicItem
 {
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
      */
     public function getParsedItemNames()
@@ -16,6 +18,8 @@ class Tree extends DynamicItem
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
     protected function getClassNameForExtractor()

@@ -8,6 +8,8 @@ namespace C5TL\Parser\DynamicItem;
 class Group extends DynamicItem
 {
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
      */
     public function getParsedItemNames()
@@ -16,6 +18,8 @@ class Group extends DynamicItem
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
      */
     protected function getClassNameForExtractor()
@@ -24,6 +28,8 @@ class Group extends DynamicItem
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser\DynamicItem::parseManual()
      */
     public function parseManual(\Gettext\Translations $translations, $concrete5version)

@@ -8,6 +8,8 @@ namespace C5TL\Parser;
 class BlockTemplates extends \C5TL\Parser
 {
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::getParserName()
      */
     public function getParserName()
@@ -16,6 +18,8 @@ class BlockTemplates extends \C5TL\Parser
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::canParseDirectory()
      */
     public function canParseDirectory()
@@ -24,6 +28,8 @@ class BlockTemplates extends \C5TL\Parser
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @see \C5TL\Parser::parseDirectoryDo()
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
