@@ -73,8 +73,9 @@ class ConfigFile
         if ($contents === false) {
             throw new Exception('Failed to read file '.$filename);
         }
-
-        $this->contents = str_replace(array("\r\n", "\r"), "\n", $contents);
+        $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
+        $contents = preg_replace('/([a-z_\\\\]+)::class\b/i', "'\\1'", $contents);
+        $this->contents = $contents;
     }
 
     /**
