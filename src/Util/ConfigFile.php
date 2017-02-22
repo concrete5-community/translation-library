@@ -123,7 +123,7 @@ class ConfigFile
         $exception = null;
         $autoloader = array($this, 'evaluateAutoloader');
         spl_autoload_register($autoloader, true, false);
-        $prevErrorHandler = set_error_handler(array($this, evaluateHandleError));
+        $prevErrorHandler = set_error_handler(array($this, 'evaluateHandleError'));
         $this->lastEvaluateError = null;
         try {
             $code = include $filename;
