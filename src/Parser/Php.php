@@ -106,13 +106,6 @@ class Php extends \C5TL\Parser
      */
     protected static function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
     {
-        $initialDirectory = @getcwd();
-        if ($initialDirectory === false) {
-            throw new \Exception('Unable to determine the current working directory');
-        }
-        if (@chdir($rootDirectory) === false) {
-            throw new \Exception('Unable to switch to directory '.$rootDirectory);
-        }
         try {
             $tempDirectory = \C5TL\Options::getTemporaryDirectory();
             $tempFileList = @tempnam($tempDirectory, 'cil');
@@ -131,7 +124,8 @@ class Php extends \C5TL\Parser
             if ($tempFilePot === false) {
                 throw new \Exception(t('Unable to create a temporary file'));
             }
-            $line = 'xgettext';
+            $line = 'cd '.escapeshellarg($rootDirectory);
+            $line .= ' && xgettext';
             $line .= ' --default-domain=messages'; // Domain
             $line .= ' --output='.escapeshellarg(basename($tempFilePot)); // Output .pot file name
             $line .= ' --output-dir='.escapeshellarg(dirname($tempFilePot)); // Output .pot folder name
@@ -164,7 +158,6 @@ class Php extends \C5TL\Parser
             @unlink($tempFilePot);
             unset($tempFilePot);
         } catch (\Exception $x) {
-            @chdir($initialDirectory);
             if (isset($tempFilePot) && @is_file($tempFilePot)) {
                 @unlink($tempFilePot);
             }
