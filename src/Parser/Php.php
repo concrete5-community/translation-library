@@ -124,7 +124,11 @@ class Php extends \C5TL\Parser
             if ($tempFilePot === false) {
                 throw new \Exception(t('Unable to create a temporary file'));
             }
-            $line = 'cd '.escapeshellarg($rootDirectory);
+            if (DIRECTORY_SEPARATOR === '\\') {
+                $line = 'cd /D '.escapeshellarg(str_replace('/', '\\', $rootDirectory));
+            } else {
+                $line = 'cd '.escapeshellarg($rootDirectory);
+            }
             $line .= ' && xgettext';
             $line .= ' --default-domain=messages'; // Domain
             $line .= ' --output='.escapeshellarg(basename($tempFilePot)); // Output .pot file name
