@@ -422,7 +422,7 @@ class Cif extends \C5TL\Parser
             $translation->addReference($filenameRel, $node->getLineNo());
             $pageUrl = (string) $pageUrl;
             if ($pageUrl !== '') {
-                $translation->addComment("Keywords for page $pageUrl");
+                $translation->addExtractedComment("Keywords for page $pageUrl");
             }
         }
     }
