@@ -64,20 +64,22 @@ class Cif extends \C5TL\Parser
      */
     private static function parseXml(\Gettext\Translations $translations, $realPath, $shownPath)
     {
-        $xml = new \DOMDocument();
-        if ($xml->load($realPath) === false) {
-            global $php_errormsg;
-            if (isset($php_errormsg) && $php_errormsg) {
-                throw new \Exception("Error loading '$realPath': $php_errormsg");
-            } else {
-                throw new \Exception("Error loading '$realPath'");
+        if (@filesize($realPath) !== 0) {
+            $xml = new \DOMDocument();
+            if ($xml->load($realPath) === false) {
+                global $php_errormsg;
+                if (isset($php_errormsg) && $php_errormsg) {
+                    throw new \Exception("Error loading '$realPath': $php_errormsg");
+                } else {
+                    throw new \Exception("Error loading '$realPath'");
+                }
             }
-        }
-        switch ($xml->documentElement->tagName) {
-            case 'concrete5-cif':
-            case 'styles':
-                static::parseXmlNode($translations, $shownPath, $xml->documentElement, '');
-                break;
+            switch ($xml->documentElement->tagName) {
+                case 'concrete5-cif':
+                case 'styles':
+                    static::parseXmlNode($translations, $shownPath, $xml->documentElement, '');
+                    break;
+            }
         }
     }
 
