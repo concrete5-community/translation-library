@@ -179,8 +179,6 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/permissioncategories':
             case '/concrete5-cif/permissioncategories/category':
             case '/concrete5-cif/permissionkeys':
-            case '/concrete5-cif/permissionkeys/permissionkey/access':
-            case '/concrete5-cif/permissionkeys/permissionkey/access/group':
             case '/concrete5-cif/singlepages':
             case '/concrete5-cif/singlepages/page/area/blocks':
             case '/concrete5-cif/singlepages/page/attributes':
@@ -228,6 +226,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/blocks/block':
             case '/concrete5-cif/pagetypes/pagetype/composer/output/pagetemplate/page/area/style':
             case '/concrete5-cif/pagetypes/pagetype/page/area/block/data/record':
+            case '/concrete5-cif/permissionkeys/permissionkey/access':
             case '/concrete5-cif/singlepages/page/area/blocks/block':
             case '/concrete5-cif/sociallinks':
             case '/concrete5-cif/stacks/stack/area/block/data/record':
