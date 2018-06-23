@@ -10,7 +10,7 @@ class AttributeKeyCategory extends DynamicItem
     /**
      * {@inheritdoc}
      *
-     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     * @see \C5TL\Parser\DynamicItem\DynamicItem::getParsedItemNames()
      */
     public function getParsedItemNames()
     {
@@ -20,7 +20,7 @@ class AttributeKeyCategory extends DynamicItem
     /**
      * {@inheritdoc}
      *
-     * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
+     * @see \C5TL\Parser\DynamicItem\DynamicItem::getClassNameForExtractor()
      */
     protected function getClassNameForExtractor()
     {
@@ -30,7 +30,7 @@ class AttributeKeyCategory extends DynamicItem
     /**
      * {@inheritdoc}
      *
-     * @see \C5TL\Parser\DynamicItem::parseManual()
+     * @see \C5TL\Parser\DynamicItem\DynamicItem::parseManual()
      */
     public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {

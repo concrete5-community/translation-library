@@ -10,7 +10,7 @@ class Tree extends DynamicItem
     /**
      * {@inheritdoc}
      *
-     * @see \C5TL\Parser\DynamicItem::getParsedItemNames()
+     * @see \C5TL\Parser\DynamicItem\DynamicItem::getParsedItemNames()
      */
     public function getParsedItemNames()
     {
@@ -20,7 +20,7 @@ class Tree extends DynamicItem
     /**
      * {@inheritdoc}
      *
-     * @see \C5TL\Parser\DynamicItem::getClassNameForExtractor()
+     * @see \C5TL\Parser\DynamicItem\DynamicItem::getClassNameForExtractor()
      */
     protected function getClassNameForExtractor()
     {
