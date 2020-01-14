@@ -132,6 +132,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/imageeditor_components':
             case '/concrete5-cif/imageeditor_controlsets':
             case '/concrete5-cif/imageeditor_filters':
+            case '/concrete5-cif/ipaccesscontrolcategories':
             case '/concrete5-cif/jobs':
             case '/concrete5-cif/jobs/job':
             case '/concrete5-cif/jobsets':
@@ -383,6 +384,9 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/geolocators/geolocator':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'GeolocatorName');
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'description', 'GeolocatorDescription');
+                break;
+            case '/concrete5-cif/ipaccesscontrolcategories/ipaccesscontrolcategory':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'IpAccessControlCategory');
                 break;
             default:
                 if (strpos($filenameRel, 'packages/') === 0) {
