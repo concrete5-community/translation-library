@@ -8,11 +8,29 @@ use Exception;
 class ConfigFile
 {
     /**
+     * Flag to be used in a configuration file so that it's skipped by this parser.
+     *
+     * @var string
+     *
+     * @example Add this code to your files:<code><pre>
+     * // ccm-translation-library: skip-file
+     * </pre></code>
+     */
+    const FLAG_SKIP_FILE = 'skip-file';
+
+    /**
      * The file contents.
      *
      * @var string
      */
     private $contents;
+
+    /**
+     * The translation library flags.
+     *
+     * @var string[]|null
+     */
+    private $flags;
 
     /**
      * The position inside the file where we can add custom content.
@@ -45,11 +63,13 @@ class ConfigFile
     public function __construct($filename)
     {
         $this->readFile($filename);
-        $this->setCustomizersPosition();
-        if (!function_exists('t')) {
-            $this->addCustomizer('function t($arg) { return $arg; }');
+        if (!in_array(static::FLAG_SKIP_FILE, $this->getFlags(), true)) {
+            $this->setCustomizersPosition();
+            if (!function_exists('t')) {
+                $this->addCustomizer('function t($arg) { return $arg; }');
+            }
+            $this->evaluate();
         }
-        $this->evaluate();
     }
 
     /**
@@ -153,5 +173,39 @@ class ConfigFile
     public function getArray()
     {
         return $this->array;
+    }
+
+    /**
+     * Get the translation library flags.
+     *
+     * @return string[]
+     */
+    protected function getFlags()
+    {
+        if ($this->flags === null) {
+            $flags = array();
+            set_error_handler(function() {}, -1);
+            $tokens = token_get_all($this->contents);
+            restore_error_handler();
+            if (is_array($tokens)) {
+                $matches = null;
+                foreach ($tokens as $token) {
+                    if (!is_array($token) || !in_array($token[0], array(T_COMMENT, T_DOC_COMMENT), true)) {
+                        continue;
+                    }
+                    if (!preg_match('/\bccm-translation-library\s*:([\s\w;,\-]+)/', $token[1], $matches)) {
+                        continue;
+                    }
+                    foreach (preg_split('/[^\w\-]+/', $matches[1], -1, PREG_SPLIT_NO_EMPTY) as $flag) {
+                        if (!in_array($flag, $flags, true)) {
+                            $flags[] = $flag;
+                        }
+                    }
+                }
+            }
+            $this->flags = $flags;
+        }
+
+        return $this->flags;
     }
 }
