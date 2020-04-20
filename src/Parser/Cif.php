@@ -122,7 +122,11 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/blocktypes/blocktype':
             case '/concrete5-cif/blocktypesets':
             case '/concrete5-cif/blocktypesets/blocktypeset/blocktype':
+            case '/concrete5-cif/boarddatasources':
+            case '/concrete5-cif/boardslottemplates':
+            case '/concrete5-cif/boardtemplates':
             case '/concrete5-cif/composercontroltypes':
+            case '/concrete5-cif/containers':
             case '/concrete5-cif/conversationeditors':
             case '/concrete5-cif/conversationratingtypes':
             case '/concrete5-cif/gatheringitemtemplates':
@@ -184,6 +188,9 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/singlepages/page/area/blocks':
             case '/concrete5-cif/singlepages/page/attributes':
             case '/concrete5-cif/singlepages/page/attributes/attributekey':
+            case '/concrete5-cif/summarycategories':
+            case '/concrete5-cif/summaryfields':
+            case '/concrete5-cif/summarytemplates':
             case '/concrete5-cif/stacks':
             case '/concrete5-cif/stacks/stack/area/block/data':
             case '/concrete5-cif/stacks/stack/area/block/link':
@@ -232,6 +239,8 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/sociallinks':
             case '/concrete5-cif/stacks/stack/area/block/data/record':
             case '/concrete5-cif/stacks/stack/area/blocks/block':
+            case '/concrete5-cif/summarytemplates/template/categories':
+            case '/concrete5-cif/summarytemplates/template/fields':
                 // Skip this node and its children
                 return;
             case '/concrete5-cif/pages/page/area/block':
@@ -387,6 +396,27 @@ class Cif extends \C5TL\Parser
                 break;
             case '/concrete5-cif/ipaccesscontrolcategories/ipaccesscontrolcategory':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'IpAccessControlCategory');
+                break;
+            case '/concrete5-cif/boarddatasources/datasource':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'BoardDataSourceName');
+                break;
+            case '/concrete5-cif/boardslottemplates/template':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'BoardSlotTemplateName');
+                break;
+            case '/concrete5-cif/boardtemplates/template':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'BoardTemplateName');
+                break;
+            case '/concrete5-cif/containers/container':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'PageContainerName');
+                break;
+            case '/concrete5-cif/summarycategories/category':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'SummaryCategoryName');
+                break;
+            case '/concrete5-cif/summaryfields/field':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'SummaryFieldName');
+                break;
+            case '/concrete5-cif/summarytemplates/template':
+                static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name', 'SummaryTemplateName');
                 break;
             default:
                 if (strpos($filenameRel, 'packages/') === 0) {
