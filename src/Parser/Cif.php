@@ -200,6 +200,9 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/taskpermissions':
             case '/concrete5-cif/taskpermissions/taskpermission/access':
             case '/concrete5-cif/taskpermissions/taskpermission/access/group':
+            case '/concrete5-cif/tasks':
+            case '/concrete5-cif/tasks/task':
+            case '/concrete5-cif/tasksets':
             case '/concrete5-cif/themes':
             case '/concrete5-cif/themes/theme':
             case '/concrete5-cif/thumbnailtypes':
@@ -252,6 +255,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/stacks/stack/area':
             case '/concrete5-cif/stacks/stack/area/block':
             case '/concrete5-cif/systemcaptcha/library':
+            case '/concrete5-cif/tasksets/taskset':
             case '/concrete5-cif/workflowtypes/workflowtype':
                 static::readXmlNodeAttribute($translations, $filenameRel, $node, 'name');
                 break;
