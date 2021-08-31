@@ -203,6 +203,7 @@ class Cif extends \C5TL\Parser
             case '/concrete5-cif/tasks':
             case '/concrete5-cif/tasks/task':
             case '/concrete5-cif/tasksets':
+            case '/concrete5-cif/tasksets/taskset/task':
             case '/concrete5-cif/themes':
             case '/concrete5-cif/themes/theme':
             case '/concrete5-cif/thumbnailtypes':
