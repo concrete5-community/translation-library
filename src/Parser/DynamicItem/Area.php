@@ -35,10 +35,22 @@ class Area extends DynamicItem
     public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
         $db = \Loader::db();
-        $rs = $db->Execute('select distinct (binary arHandle) as AreaName from Areas order by binary arHandle');
-        while ($row = $rs->FetchRow()) {
+        $sql = 'select distinct (binary arHandle) as AreaName from Areas order by binary arHandle';
+        if (method_exists($db, 'executeQuery')) {
+            $rs = $db->executeQuery($sql);
+        } else {
+            $rs = $db->Execute($sql);
+        }
+        if (method_exists($rs, 'fetchAssociative')) {
+            $fetcher = 'fetchAssociative';
+        } else {
+            $fetcher = 'FetchRow';
+        }
+        while ($row = $rs->$fetcher()) {
             $this->addTranslation($translations, $row['AreaName'], 'AreaName');
         }
-        $rs->Close();
+        if (method_exists($rs, 'Close')) {
+            $rs->Close();
+        }
     }
 }
