@@ -46,7 +46,19 @@ class ConfigFiles extends \C5TL\Parser
     {
         switch ($relativePath) {
             case '':
-                $directoryAlternatives = array('application/config/generated_overrides', 'application/config', 'concrete/config');
+                $corePrefix = 'concrete';
+                if (defined('DIR_BASE') && defined('DIR_BASE_CORE')) {
+                    $dirBase = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', DIR_BASE), '/');
+                    if ($rootDirectory === $dirBase) { 
+                        // We are working on the current Concrete instance
+                        $dirBaseCore = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', DIR_BASE_CORE), '/');
+                        if ($dirBaseCore !== "{$dirBase}/concrete" && strpos($dirBaseCore, "{$dirBase}/") === 0) {
+                            // The current Concrete instance is running from the "updates" directory
+                            $corePrefix = substr($dirBaseCore, strlen("{$dirBase}/"));
+                        }
+                    }
+                }
+                $directoryAlternatives = array('application/config/generated_overrides', 'application/config', "{$corePrefix}/config");
                 break;
             case 'application':
                 $directoryAlternatives = array('config/generated_overrides', 'config');
