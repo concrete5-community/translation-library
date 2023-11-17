@@ -229,6 +229,7 @@ class Cif extends \C5TL\Parser
                 $childnodesLimit = array('title', 'description');
                 break;
             case '/concrete5-cif/area/blocks':
+            case '/concrete5-cif/attributecategories/category/attributetypes':
             case '/concrete5-cif/banned_words':
             case '/concrete5-cif/boards/board/datasources/datasource/configuration':
             case '/concrete5-cif/boards/board/templates':
