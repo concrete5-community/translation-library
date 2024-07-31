@@ -36,7 +36,7 @@ class Cif extends \C5TL\Parser
     {
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
-            $shownDirectory = $prefix.(($child === '') ? '' : "$child/");
+            $shownDirectory = $prefix . (($child === '') ? '' : "$child/");
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -46,7 +46,7 @@ class Cif extends \C5TL\Parser
                 if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
                     if (preg_match('/^(.*)\.xml$/', $file) && is_file($fullFilePath)) {
-                        static::parseXml($translations, $fullFilePath, $shownDirectory.$file);
+                        static::parseXml($translations, $fullFilePath, $shownDirectory . $file);
                     }
                 }
             }
@@ -104,7 +104,7 @@ class Cif extends \C5TL\Parser
             default:
                 throw new \Exception("Unknown node class '$nodeClass' in '$filenameRel'");
         }
-        $path = $prePath.'/'.$node->tagName;
+        $path = $prePath . '/' . $node->tagName;
         $childnodesLimit = null;
         switch ($path) {
             case '/concrete5-cif':
@@ -439,7 +439,7 @@ class Cif extends \C5TL\Parser
                 if (strpos($filenameRel, 'packages/') === 0) {
                     return;
                 }
-                throw new \Exception('Unknown tag name '.$path.' in '.$filenameRel."\n\nNode:\n".$node->ownerDocument->saveXML($node));
+                throw new \Exception('Unknown tag name ' . $path . ' in ' . $filenameRel . "\n\nNode:\n" . $node->ownerDocument->saveXML($node));
         }
         if ($node->hasChildNodes()) {
             foreach ($node->childNodes as $child) {

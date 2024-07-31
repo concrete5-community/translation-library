@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  phpcs:
+    name: PHP Coding Style
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: php-cs-fixer
+          coverage: none
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Run PHP-CS-Fixer
+        run: php-cs-fixer check --ansi --no-interaction --using-cache=no --diff --show-progress=none

@@ -22,7 +22,7 @@ abstract class DynamicItem
     {
         $fqClassName = $this->getClassNameForExtractor();
         if (is_string($fqClassName) && ($fqClassName !== '') && class_exists($fqClassName, true) && method_exists($fqClassName, 'exportTranslations')) {
-            $translations->mergeWith(call_user_func($fqClassName.'::exportTranslations'));
+            $translations->mergeWith(call_user_func($fqClassName . '::exportTranslations'));
         } else {
             $this->parseManual($translations, $concrete5version);
         }

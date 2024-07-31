@@ -44,7 +44,7 @@ class ThemePresets extends \C5TL\Parser
                 if ($dirList === false) {
                     throw new \Exception("Unable to parse directory $presetsAbsDirectory");
                 }
-                $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix.$child);
+                $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
                 foreach ($dirList as $file) {
                     if (($file[0] !== '.') && preg_match('/[^.].*\.less$/i', $file)) {
                         $fileAbs = "$presetsAbsDirectory/$file";
@@ -63,7 +63,7 @@ class ThemePresets extends \C5TL\Parser
                                 $content
                             );
                             foreach (array("'", '"') as $quote) {
-                                if (preg_match('%(?:^|\\n|;)[ \\t]*@preset-name:\\s*'.$quote.'([^'.$quote.']*)'.$quote.'\\s*(?:;|$)%s', $content, $matches)) {
+                                if (preg_match('%(?:^|\\n|;)[ \\t]*@preset-name:\\s*' . $quote . '([^' . $quote . ']*)' . $quote . '\\s*(?:;|$)%s', $content, $matches)) {
                                     $presetName = $matches[1];
                                     $presetLine = null;
                                     $p = strpos($content, $matches[0]);
@@ -73,7 +73,7 @@ class ThemePresets extends \C5TL\Parser
                                     if (!isset($themesPresets[$presetName])) {
                                         $themesPresets[$presetName] = array();
                                     }
-                                    $themesPresets[$presetName][] = array($shownChild."/$file", $presetLine);
+                                    $themesPresets[$presetName][] = array($shownChild . "/$file", $presetLine);
                                     break;
                                 }
                             }
