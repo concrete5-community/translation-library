@@ -49,7 +49,7 @@ class ConfigFiles extends \C5TL\Parser
                 $corePrefix = 'concrete';
                 if (defined('DIR_BASE') && defined('DIR_BASE_CORE')) {
                     $dirBase = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', DIR_BASE), '/');
-                    if ($rootDirectory === $dirBase) { 
+                    if ($rootDirectory === $dirBase) {
                         // We are working on the current Concrete instance
                         $dirBaseCore = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', DIR_BASE_CORE), '/');
                         if ($dirBaseCore !== "{$dirBase}/concrete" && strpos($dirBaseCore, "{$dirBase}/") === 0) {
@@ -86,11 +86,11 @@ class ConfigFiles extends \C5TL\Parser
     {
         foreach ($directoryAlternatives as $subDir) {
             $rel = ($subDir === '') ? 'app.php' : "$subDir/app.php";
-            $fileAbs = $rootDirectory.'/'.$rel;
+            $fileAbs = $rootDirectory . '/' . $rel;
             if (!is_file($fileAbs)) {
                 continue;
             }
-            $fileRel = $prefix.$rel;
+            $fileRel = $prefix . $rel;
             $configFile = new \C5TL\Util\ConfigFile($fileAbs);
             $config = $configFile->getArray();
             if (isset($config['file_types']) && is_array($config['file_types'])) {
@@ -117,11 +117,11 @@ class ConfigFiles extends \C5TL\Parser
             list($baseFilename, $subkey) = explode('.', $key, 2);
             foreach ($directoryAlternatives as $subDir) {
                 $rel = ($subDir === '') ? "{$baseFilename}.php" : "{$subDir}/{$baseFilename}.php";
-                $fileAbs = $rootDirectory.'/'.$rel;
+                $fileAbs = $rootDirectory . '/' . $rel;
                 if (!is_file($fileAbs)) {
                     continue;
                 }
-                $fileRel = $prefix.$rel;
+                $fileRel = $prefix . $rel;
                 $configFile = new \C5TL\Util\ConfigFile($fileAbs);
                 $config = $configFile->getArray();
                 $subkeys = explode('.', $subkey);
@@ -154,7 +154,7 @@ class ConfigFiles extends \C5TL\Parser
             'concrete.user.username.allowed_characters.error_string' => '',
         );
     }
-    
+
     /**
      * Add to the $translations the value read from the configuration.
      *

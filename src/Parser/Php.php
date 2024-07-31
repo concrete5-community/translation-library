@@ -63,7 +63,7 @@ class Php extends \C5TL\Parser
                         $references = $newTranslation->getReferences();
                         $newTranslation->deleteReferences();
                         foreach ($references as $reference) {
-                            $newTranslation->addReference($relativePath.'/'.$reference[0], $reference[1]);
+                            $newTranslation->addReference($relativePath . '/' . $reference[0], $reference[1]);
                         }
                         $translations[] = $newTranslation;
                     }
@@ -125,14 +125,14 @@ class Php extends \C5TL\Parser
                 throw new \Exception(t('Unable to create a temporary file'));
             }
             if (DIRECTORY_SEPARATOR === '\\') {
-                $line = 'cd /D '.escapeshellarg(str_replace('/', '\\', $rootDirectory));
+                $line = 'cd /D ' . escapeshellarg(str_replace('/', '\\', $rootDirectory));
             } else {
-                $line = 'cd '.escapeshellarg($rootDirectory);
+                $line = 'cd ' . escapeshellarg($rootDirectory);
             }
             $line .= ' && xgettext';
             $line .= ' --default-domain=messages'; // Domain
-            $line .= ' --output='.escapeshellarg(basename($tempFilePot)); // Output .pot file name
-            $line .= ' --output-dir='.escapeshellarg(dirname($tempFilePot)); // Output .pot folder name
+            $line .= ' --output=' . escapeshellarg(basename($tempFilePot)); // Output .pot file name
+            $line .= ' --output-dir=' . escapeshellarg(dirname($tempFilePot)); // Output .pot folder name
             $line .= ' --language=PHP'; // Source files are in php
             $line .= ' --from-code=UTF-8'; // Source files are in utf-8
             $line .= ' --add-comments=i18n'; // Place comment blocks preceding keyword lines in output file if they start with '// i18n: '
@@ -142,7 +142,7 @@ class Php extends \C5TL\Parser
             $line .= ' --keyword=tc:1c,2'; // Look for the first argument of the "tc" function for extracting translation context, and the second argument is the translatable text in singular form.
             $line .= ' --no-escape'; // Do not use C escapes in output
             $line .= ' --add-location'; // Generate '#: filename:line' lines
-            $line .= ' --files-from='.escapeshellarg($tempFileList); // Get list of input files from file
+            $line .= ' --files-from=' . escapeshellarg($tempFileList); // Get list of input files from file
             $line .= ' 2>&1';
             $output = array();
             $rc = null;
@@ -156,7 +156,7 @@ class Php extends \C5TL\Parser
                 $output = array();
             }
             if ($rc !== 0) {
-                throw new \Exception('xgettext failed: '.implode("\n", $output));
+                throw new \Exception('xgettext failed: ' . implode("\n", $output));
             }
             $newTranslations = \Gettext\Translations::fromPoFile($tempFilePot);
             @unlink($tempFilePot);
@@ -186,7 +186,7 @@ class Php extends \C5TL\Parser
      */
     protected static function parseDirectoryDo_php($rootDirectory, $phpFiles)
     {
-        $prefix = $rootDirectory.'/';
+        $prefix = $rootDirectory . '/';
         $originalExtractComments = \Gettext\Extractors\PhpCode::$extractComments;
         \Gettext\Extractors\PhpCode::$extractComments = 'i18n';
         $originalFunctions = \Gettext\Extractors\PhpCode::$functions;
@@ -196,7 +196,7 @@ class Php extends \C5TL\Parser
         try {
             $absFiles = array_map(
                 function ($phpFile) use ($prefix) {
-                    return $prefix.$phpFile;
+                    return $prefix . $phpFile;
                 },
                 $phpFiles
             );

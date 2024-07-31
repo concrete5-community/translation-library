@@ -12,7 +12,6 @@ return $config
     ->setRules([
         '@PER-CS' => true,
         '@PER-CS:risky' => true,
-
         // Empty body of class, interface, trait, enum or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a single space.
         'single_line_empty_body' => false,
         // Multi-line arrays, arguments list, parameters list and `match` expressions must have a trailing comma.

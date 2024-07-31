@@ -84,14 +84,14 @@ class ConfigFile
     private function readFile($filename)
     {
         if (!is_file($filename)) {
-            throw new Exception('Failed to find file '.$filename);
+            throw new Exception('Failed to find file ' . $filename);
         }
         if (!is_readable($filename)) {
-            throw new Exception('File is not readable: '.$filename);
+            throw new Exception('File is not readable: ' . $filename);
         }
         $contents = @file_get_contents($filename);
         if ($contents === false) {
-            throw new Exception('Failed to read file '.$filename);
+            throw new Exception('Failed to read file ' . $filename);
         }
         $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
         $contents = preg_replace('/([a-z_\\\\]+)::class\b/i', "'\\1'", $contents);
@@ -111,7 +111,7 @@ class ConfigFile
 
     private function addCustomizer($code)
     {
-        $this->contents = substr($this->contents, 0, $this->customizersPosition)."\n".$code."\n".substr($this->contents, $this->customizersPosition);
+        $this->contents = substr($this->contents, 0, $this->customizersPosition) . "\n" . $code . "\n" . substr($this->contents, $this->customizersPosition);
     }
 
     public function evaluateAutoloader($className)
@@ -130,7 +130,7 @@ class ConfigFile
     {
         $tempDir = Options::getTemporaryDirectory();
         for ($i = 0; ; ++$i) {
-            $filename = rtrim($tempDir, '/'.DIRECTORY_SEPARATOR).'/c5tltmp'.$i.'.php';
+            $filename = rtrim($tempDir, '/' . DIRECTORY_SEPARATOR) . '/c5tltmp' . $i . '.php';
             if (!file_exists($filename)) {
                 break;
             }
@@ -160,7 +160,7 @@ class ConfigFile
             throw $exception;
         }
         if (!is_array($code) && $this->lastEvaluateError !== null) {
-            throw new Exception('Failed to read configuration file: '.$this->lastEvaluateError[1]);
+            throw new Exception('Failed to read configuration file: ' . $this->lastEvaluateError[1]);
         }
         $this->array = is_array($code) ? $code : array();
     }
@@ -184,7 +184,7 @@ class ConfigFile
     {
         if ($this->flags === null) {
             $flags = array();
-            set_error_handler(function() {}, -1);
+            set_error_handler(function () {}, -1);
             $tokens = token_get_all($this->contents);
             restore_error_handler();
             if (is_array($tokens)) {

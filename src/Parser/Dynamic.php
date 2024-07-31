@@ -49,12 +49,12 @@ class Dynamic extends \C5TL\Parser
     public function getSubParsers()
     {
         $result = array();
-        $dir = __DIR__.'/DynamicItem';
+        $dir = __DIR__ . '/DynamicItem';
         if (is_dir($dir) && is_readable($dir)) {
             $matches = null;
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
-                    $fqClassName = '\\'.__NAMESPACE__.'\\DynamicItem\\'.$matches[1];
+                    $fqClassName = '\\' . __NAMESPACE__ . '\\DynamicItem\\' . $matches[1];
                     $instance = new $fqClassName();
                     /* @var $instance \C5TL\Parser\DynamicItem\DynamicItem */
                     $result[$instance->getDynamicItemsParserHandler()] = $instance;
