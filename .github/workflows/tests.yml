@@ -9,7 +9,31 @@ on:
       - main
 
 jobs:
-  phpcs:
+
+  php-syntax:
+    name: PHP Syntax
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          # This should be the value of the minimum PHP version as specified in composer.json
+          php-version: 5.3
+          extensions: opcache
+          coverage: none
+          tools: none
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Check syntax
+        uses: mlocati/check-php-syntax@main
+        with:
+          exclude: |
+            .php-cs-fixer.php
+
+  php-cs:
     name: PHP Coding Style
     runs-on: ubuntu-latest
     steps:
