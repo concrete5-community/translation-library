@@ -103,6 +103,7 @@ class ConfigFile
      */
     private function setCustomizersPosition()
     {
+        $m = null;
         if (!preg_match('/^\s*return[\n\s]+(?:\[|array[\s\n]*\()/ims', $this->contents, $m)) {
             throw new Exception('Failed to determine the start of the return array');
         }

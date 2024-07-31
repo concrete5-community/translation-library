@@ -2,11 +2,22 @@
 
 namespace C5TL\Parser;
 
+use C5TL\Parser\DynamicItem\DynamicItem;
+
 /**
  * Extract translatable strings from block type templates.
  */
 class Dynamic extends \C5TL\Parser
 {
+    private $subParsers = array();
+
+    public function __construct()
+    {
+        foreach ($this->getDefaultSubParsers() as $subParser) {
+            $this->registerSubParser($subParser);
+        }
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -28,6 +39,16 @@ class Dynamic extends \C5TL\Parser
     }
 
     /**
+     * @return $this
+     */
+    public function registerSubParser(DynamicItem $subParser)
+    {
+        $this->subParsers[$subParser->getDynamicItemsParserHandler()] = $subParser;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @see \C5TL\Parser::parseRunningConcrete5Do()
@@ -44,9 +65,27 @@ class Dynamic extends \C5TL\Parser
     /**
      * Returns the fully-qualified class names of all the sub-parsers.
      *
-     * @return array[\C5TL\Parser\DynamicItem\DynamicItem]
+     * @return \C5TL\Parser\DynamicItem\DynamicItem[]
      */
     public function getSubParsers()
+    {
+        return array_values($this->subParsers);
+    }
+
+    /**
+     * @param string|mixed $handle
+     *
+     * @return \C5TL\Parser\DynamicItem\DynamicItem|null
+     */
+    public function getSubParserByHandle($handle)
+    {
+        return is_string($handle) && isset($this->subParsers[$handle]) ? $this->subParsers[$handle] : null;
+    }
+
+    /**
+     * @return \C5TL\Parser\DynamicItem\DynamicItem[]
+     */
+    private function getDefaultSubParsers()
     {
         $result = array();
         $dir = __DIR__ . '/DynamicItem';
@@ -55,9 +94,7 @@ class Dynamic extends \C5TL\Parser
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches) && ($matches[1] !== 'DynamicItem')) {
                     $fqClassName = '\\' . __NAMESPACE__ . '\\DynamicItem\\' . $matches[1];
-                    $instance = new $fqClassName();
-                    /* @var $instance \C5TL\Parser\DynamicItem\DynamicItem */
-                    $result[$instance->getDynamicItemsParserHandler()] = $instance;
+                    $result[] = new $fqClassName();
                 }
             }
         }
