@@ -15,6 +15,13 @@ abstract class Parser
     private static $cache = array();
 
     /**
+     * The parser factory.
+     *
+     * @var \C5TL\ParserFactory|null
+     */
+    private static $factory;
+
+    /**
      * Returns the parser name.
      *
      * @return string
@@ -248,37 +255,42 @@ abstract class Parser
         return $result;
     }
 
+    final public static function getParserFactory()
+    {
+        if (self::$factory === null) {
+            self::$factory = new ParserFactory();
+        }
+
+        return self::$factory;
+    }
+
+    final public static function setParserFactory(ParserFactory $value)
+    {
+        self::$factory = $value;
+    }
+
     /**
-     * Retrieves all the available parsers.
+     * @deprecated Use ParserFactory
      *
-     * @return array[\C5TL\Parser]
+     * @return \C5TL\Parser[]
      */
     final public static function getAllParsers()
     {
-        $result = array();
-        $dir = __DIR__ . '/Parser';
-        if (is_dir($dir) && is_readable($dir)) {
-            $matches = null;
-            foreach (scandir($dir) as $item) {
-                if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
-                    $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . $matches[1];
-                    $result[] = new $fqClassName();
-                }
-            }
-        }
+        $factory = self::getParserFactory();
 
-        return $result;
+        return $factory->getParsers();
     }
 
+    /**
+     * @deprecated Use ParserFactory
+     *
+     * @return \C5TL\Parser|null
+     */
     final public static function getByHandle($parserHandle)
     {
-        $parser = null;
-        $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . static::camelifyString($parserHandle);
-        if (class_exists($fqClassName, true)) {
-            $parser = new $fqClassName();
-        }
+        $factory = self::getParserFactory();
 
-        return $parser;
+        return $factory->getParserByHandle($parserHandle);
     }
 
     /**
