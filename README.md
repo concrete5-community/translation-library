@@ -1,10 +1,13 @@
-# concrete5 Translation Library
+[![Tests](https://github.com/concrete5-community/translation-library/actions/workflows/tests.yml/badge.svg)](https://github.com/concrete5-community/translation-library/actions/workflows/tests.yml)
 
-Useful tools to extract translatable strings from concrete5 projects.
+# Concrete Translation Library
+
+Useful tools to extract translatable strings from concrete5/ConcreteCMS projects.
 
 It's used by
-- [concrete5](https://github.com/concrete5/concrete5)
+
+- [ConcreteCMS](https://github.com/concretecms/concretecms)
   - since version 5.7.4 to translate the site interface
   - since version 5.7.5.4 to translate packages
-- [concrete5-translation-tools](https://github.com/mlocati/concrete5-translation-tools)
-  - to translate the core (core is fetched from GitHub both for [concrete5](https://github.com/concrete5/concrete5) and [concrete5-legacy](https://github.com/concrete5/concrete5-legacy), parsed with this library and translations are fetched by [Transifex](https://www.transifex.com/concrete5/concrete5))
+- [Community Translation](https://github.com/concretecms/addon_community_translation/)
+  - to translate the core and packages - see [translate.concretecms.org](https://translate.concretecms.org/)
