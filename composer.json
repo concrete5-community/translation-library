@@ -37,7 +37,11 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.36 || ^6.5.14 || ^8.5.39"
+        "phpunit/phpunit": "^4.8.36 || ^6.5.14 || ^8.5.39",
+        "twig/twig": "v3.11.3"
+    },
+    "suggest": {
+        "twig/twig": "To parse twig files for translations"
     },
     "autoload-dev": {
         "psr-4": {

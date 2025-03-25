@@ -25,6 +25,7 @@ class FactoryTest extends TestCase
             array('dynamic'),
             array('php'),
             array('theme_presets'),
+            array('twig'),
         );
     }
 

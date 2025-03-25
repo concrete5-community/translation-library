@@ -1,0 +1,12 @@
+{{ deeply(nested(function(call(t('foo'))))) }}
+{{ lots | of | filters | t2('baz', 'bazs') }}
+{{
+tc(
+    'context',
+    'bar'
+)
+}}
+{% if t('test') %}
+{# Comment #}
+{% endif %}
+{% do "foo" ~ "baz" %}

@@ -7,6 +7,8 @@ namespace C5TL\Parser;
  */
 class Php extends \C5TL\Parser
 {
+    protected $fileRegex = '/^(.*)\.php$/i';
+
     /**
      * {@inheritdoc}
      *
@@ -44,18 +46,14 @@ class Php extends \C5TL\Parser
             foreach ($contents as $file) {
                 if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
-                    if (preg_match('/^(.*)\.php$/i', $file) && is_file($fullFilePath)) {
+                    if (preg_match($this->fileRegex, $file) && is_file($fullFilePath)) {
                         $phpFiles[] = ($child === '') ? $file : "$child/$file";
                     }
                 }
             }
         }
         if (count($phpFiles) > 0) {
-            if (\C5TL\Gettext::commandIsAvailable('xgettext')) {
-                $newTranslations = static::parseDirectoryDo_xgettext($rootDirectory, $phpFiles);
-            } else {
-                $newTranslations = static::parseDirectoryDo_php($rootDirectory, $phpFiles);
-            }
+            $newTranslations = $this->parseDirectoryFiles($rootDirectory, $phpFiles);
             if ($newTranslations->count() > 0) {
                 if ($relativePath !== '') {
                     foreach ($newTranslations as $newTranslation) {
@@ -219,5 +217,14 @@ class Php extends \C5TL\Parser
         }
 
         return $newTranslations;
+    }
+
+    protected function parseDirectoryFiles(string $rootDirectory, array $phpFiles)
+    {
+        if (\C5TL\Gettext::commandIsAvailable('xgettext')) {
+            return static::parseDirectoryDo_xgettext($rootDirectory, $phpFiles);
+        }
+
+        return static::parseDirectoryDo_php($rootDirectory, $phpFiles);
     }
 }

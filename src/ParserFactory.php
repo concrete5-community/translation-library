@@ -58,6 +58,13 @@ class ParserFactory
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
                     $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . $matches[1];
+
+                    if (method_exists($fqClassName, 'isSupported')) {
+                        if (!$fqClassName::isSupported()) {
+                            continue;
+                        }
+                    }
+
                     $result[] = new $fqClassName();
                 }
             }
