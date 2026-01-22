@@ -83,15 +83,7 @@ abstract class Parser
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
         }
-        $dir = (string) $rootDirectory;
-        if ($dir !== '') {
-            $dir = @realpath($rootDirectory);
-            if (($dir === false) || (!is_dir($dir))) {
-                $dir = '';
-            } else {
-                $dir = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $dir), '/');
-            }
-        }
+        $dir = $this->getAbsoluteDirectoryPath($rootDirectory);
         if ($dir === '') {
             throw new \Exception("Unable to find the directory $rootDirectory");
         }
@@ -334,5 +326,63 @@ abstract class Parser
         $string = preg_replace('/_+/', '_', trim($string, '_'));
 
         return $string;
+    }
+
+    /**
+     * Get the normalized absolute path of an existing directory.
+     *
+     * Don't use realpath as it resolves symlinks.
+     *
+     * @param string|mixed $path
+     *
+     * @return string
+     */
+    private function getAbsoluteDirectoryPath($path)
+    {
+        if (!is_string($path) || $path === '') {
+            return '';
+        }
+        $path = rtrim(str_replace(\DIRECTORY_SEPARATOR, '/', $path), '/');
+        if ($path === '') {
+            return '/';
+        }
+        $cwd = str_replace(\DIRECTORY_SEPARATOR, '/', getcwd());
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            if (preg_match('#^//\w#', $path)) {
+                // UNC path
+                $path = realpath($path);
+
+                return $path && is_dir($path) ? str_replace(\DIRECTORY_SEPARATOR, '/', $path) : '';
+            }
+            if ($path[0] === '/' && preg_match('#^[a-z]:#i', $cwd)) {
+                $path = substr($cwd, 0, 2) . $path;
+            }
+            $isAbsolute = (bool) preg_match('#^[a-z]:/#i', $path);
+        } else {
+            $isAbsolute = $path[0] === '/';
+        }
+        if (!$isAbsolute) {
+            $path = rtrim($cwd, '/') . '/' . $path;
+        }
+        $parts = array();
+        foreach (explode('/', $path) as $part) {
+            if ($part === '' || $part === '.') {
+                continue;
+            }
+            if ($part === '..') {
+                if ($parts === array()) {
+                    return '';
+                }
+                array_pop($parts);
+            } else {
+                $parts[] = $part;
+            }
+        }
+        $absolute = '/' . implode('/', $parts);
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            $absolute = substr($absolute, 1);
+        }
+
+        return is_dir($absolute) ? $absolute : '';
     }
 }
