@@ -11,22 +11,22 @@ class FactoryTest extends TestCase
         $factory = new ParserFactory();
         $parsers = $factory->getParsers();
         $this->assertSame('array', gettype($parsers));
-        $this->assertNotSame(array(), $parsers);
+        $this->assertNotSame([], $parsers);
         $this->assertSame(array_values($parsers), $parsers);
         $this->assertNull($factory->getParserByHandle('this does not exist'));
     }
 
     public static function provideRequiredParserHandles()
     {
-        return array(
-            array('block_templates'),
-            array('cif'),
-            array('config_files'),
-            array('dynamic'),
-            array('php'),
-            array('theme_presets'),
-            array('twig'),
-        );
+        return [
+            ['block_templates'],
+            ['cif'],
+            ['config_files'],
+            ['dynamic'],
+            ['php'],
+            ['theme_presets'],
+            ['twig'],
+        ];
     }
 
     /**

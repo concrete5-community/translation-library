@@ -30,12 +30,12 @@ class ParserTest extends TestCase
         $this->assertEquals([['test/example_view.php', '3']], $clean['foo']->getReferences());
         $this->assertEquals([['test/example_view.php', '4']], $clean['baz']->getReferences());
         $this->assertEquals('bazs', $clean['baz']->getPlural());
-        $this->assertEquals([['test/example_view.php', '5']], $clean['bar']->getReferences());
+        $this->assertEquals([['test/example_view.php', '6']], $clean['bar']->getReferences());
         $this->assertEquals('context', $clean['bar']->getContext());
 
 
         $this->assertEquals([
-            ['test/example_view.php', '6'],
+            ['test/example_view.php', '7'],
             ['test/subdir/another_view.php', '3'],
         ], $clean['test']->getReferences());
     }

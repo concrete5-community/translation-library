@@ -12,7 +12,7 @@ abstract class Parser
      *
      * @var array
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * The parser factory.
@@ -166,7 +166,7 @@ abstract class Parser
      */
     public function getSubParsers()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class Parser
      */
     final public static function clearCache()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -189,7 +189,7 @@ abstract class Parser
     {
         $rootDirectory = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $rootDirectory), '/');
         if (!isset(self::$cache[__FUNCTION__])) {
-            self::$cache[__FUNCTION__] = array();
+            self::$cache[__FUNCTION__] = [];
         }
         $cacheKey = $rootDirectory . '*' . ($exclude3rdParty ? '1' : '0');
         if (!isset(self::$cache[__FUNCTION__][$cacheKey])) {
@@ -216,7 +216,7 @@ abstract class Parser
         if ($relativePath !== '') {
             $thisRoot .= '/' . $relativePath;
         }
-        $subDirs = array();
+        $subDirs = [];
         $hDir = @opendir($thisRoot);
         if ($hDir === false) {
             throw new \Exception("Unable to open directory $rootDirectory");
@@ -237,7 +237,7 @@ abstract class Parser
             $subDirs[] = $entry;
         }
         @closedir($hDir);
-        $result = array();
+        $result = [];
         foreach ($subDirs as $subDir) {
             $rel = ($relativePath === '') ? $subDir : "$relativePath/$subDir";
             $result = array_merge($result, static::getDirectoryStructureDo($rel, $rootDirectory, $exclude3rdParty));
@@ -294,7 +294,7 @@ abstract class Parser
      */
     final protected static function unhandleString($string)
     {
-        return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
+        return ucwords(str_replace(['_', '-', '/'], ' ', $string));
     }
 
     /**
@@ -364,13 +364,13 @@ abstract class Parser
         if (!$isAbsolute) {
             $path = rtrim($cwd, '/') . '/' . $path;
         }
-        $parts = array();
+        $parts = [];
         foreach (explode('/', $path) as $part) {
             if ($part === '' || $part === '.') {
                 continue;
             }
             if ($part === '..') {
-                if ($parts === array()) {
+                if ($parts === []) {
                     return '';
                 }
                 array_pop($parts);

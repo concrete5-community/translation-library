@@ -10,7 +10,7 @@ class ParserFactory
     /**
      * @var \C5TL\Parser[]
      */
-    private $parsers = array();
+    private $parsers = [];
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class ParserFactory
      */
     private function getDefaultParsers()
     {
-        $result = array();
+        $result = [];
         $dir = __DIR__ . '/Parser';
         if (is_dir($dir) && is_readable($dir)) {
             $matches = null;

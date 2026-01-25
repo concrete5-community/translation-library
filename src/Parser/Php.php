@@ -36,8 +36,8 @@ class Php extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $phpFiles = array();
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        $phpFiles = [];
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -146,7 +146,7 @@ class Php extends \C5TL\Parser
             }
             $line .= ' --files-from=' . escapeshellarg($tempFileList); // Get list of input files from file
             $line .= ' 2>&1';
-            $output = array();
+            $output = [];
             $rc = null;
             @exec($line, $output, $rc);
             @unlink($tempFileList);
@@ -155,7 +155,7 @@ class Php extends \C5TL\Parser
                 $rc = -1;
             }
             if (!is_array($output)) {
-                $output = array();
+                $output = [];
             }
             if ($rc !== 0) {
                 throw new \Exception('xgettext failed: ' . implode("\n", $output));
@@ -233,7 +233,7 @@ class Php extends \C5TL\Parser
             return $result;
         }
         $result = '';
-        $output = array();
+        $output = [];
         $rc = null;
         @exec('xgettext --help 2>&1', $output, $rc);
         if ($rc === 0) {
