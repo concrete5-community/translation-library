@@ -13,22 +13,27 @@ jobs:
   php-syntax:
     name: PHP Syntax
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version:
+          - "5.3"
+          - "8.5"
     steps:
       -
         name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           # This should be the value of the minimum PHP version as specified in composer.json
-          php-version: 5.3
+          php-version: ${{ matrix.php-version }}
           extensions: opcache
           coverage: none
           tools: none
       -
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       -
-        name: Check syntax
-        uses: mlocati/check-php-syntax@main
+        name: Check PHP ${{ matrix.php-version }} syntax
+        uses: mlocati/check-php-syntax@v1
         with:
           exclude: |
             .php-cs-fixer.php
@@ -42,15 +47,15 @@ jobs:
         name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.5"
           tools: php-cs-fixer
           coverage: none
       -
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       -
         name: Run PHP-CS-Fixer
-        run: php-cs-fixer check --ansi --no-interaction --using-cache=no --diff --show-progress=none
+        run: php-cs-fixer check --ansi --no-interaction --using-cache=no --diff --show-progress=none --verbose
 
 
   phpunit:
@@ -73,6 +78,8 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
+          - "8.5"
         include:
           -
             os: windows-latest
@@ -82,7 +89,7 @@ jobs:
             php-version: "7.4"
           -
             os: windows-latest
-            php-version: "8.3"
+            php-version: "8.5"
     runs-on: ${{ matrix.os }}
     steps:
       -
@@ -94,7 +101,7 @@ jobs:
           coverage: none
       -
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
       -
