@@ -12,7 +12,7 @@ abstract class Parser
      *
      * @var array
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * The parser factory.
@@ -83,15 +83,7 @@ abstract class Parser
         if (!is_object($translations)) {
             $translations = new \Gettext\Translations();
         }
-        $dir = (string) $rootDirectory;
-        if ($dir !== '') {
-            $dir = @realpath($rootDirectory);
-            if (($dir === false) || (!is_dir($dir))) {
-                $dir = '';
-            } else {
-                $dir = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $dir), '/');
-            }
-        }
+        $dir = $this->getAbsoluteDirectoryPath($rootDirectory);
         if ($dir === '') {
             throw new \Exception("Unable to find the directory $rootDirectory");
         }
@@ -174,7 +166,7 @@ abstract class Parser
      */
     public function getSubParsers()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -182,7 +174,7 @@ abstract class Parser
      */
     final public static function clearCache()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -197,7 +189,7 @@ abstract class Parser
     {
         $rootDirectory = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $rootDirectory), '/');
         if (!isset(self::$cache[__FUNCTION__])) {
-            self::$cache[__FUNCTION__] = array();
+            self::$cache[__FUNCTION__] = [];
         }
         $cacheKey = $rootDirectory . '*' . ($exclude3rdParty ? '1' : '0');
         if (!isset(self::$cache[__FUNCTION__][$cacheKey])) {
@@ -224,7 +216,7 @@ abstract class Parser
         if ($relativePath !== '') {
             $thisRoot .= '/' . $relativePath;
         }
-        $subDirs = array();
+        $subDirs = [];
         $hDir = @opendir($thisRoot);
         if ($hDir === false) {
             throw new \Exception("Unable to open directory $rootDirectory");
@@ -245,7 +237,7 @@ abstract class Parser
             $subDirs[] = $entry;
         }
         @closedir($hDir);
-        $result = array();
+        $result = [];
         foreach ($subDirs as $subDir) {
             $rel = ($relativePath === '') ? $subDir : "$relativePath/$subDir";
             $result = array_merge($result, static::getDirectoryStructureDo($rel, $rootDirectory, $exclude3rdParty));
@@ -302,7 +294,7 @@ abstract class Parser
      */
     final protected static function unhandleString($string)
     {
-        return ucwords(str_replace(array('_', '-', '/'), ' ', $string));
+        return ucwords(str_replace(['_', '-', '/'], ' ', $string));
     }
 
     /**
@@ -334,5 +326,63 @@ abstract class Parser
         $string = preg_replace('/_+/', '_', trim($string, '_'));
 
         return $string;
+    }
+
+    /**
+     * Get the normalized absolute path of an existing directory.
+     *
+     * Don't use realpath as it resolves symlinks.
+     *
+     * @param string|mixed $path
+     *
+     * @return string
+     */
+    private function getAbsoluteDirectoryPath($path)
+    {
+        if (!is_string($path) || $path === '') {
+            return '';
+        }
+        $path = rtrim(str_replace(\DIRECTORY_SEPARATOR, '/', $path), '/');
+        if ($path === '') {
+            return '/';
+        }
+        $cwd = str_replace(\DIRECTORY_SEPARATOR, '/', getcwd());
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            if (preg_match('#^//\w#', $path)) {
+                // UNC path
+                $path = realpath($path);
+
+                return $path && is_dir($path) ? str_replace(\DIRECTORY_SEPARATOR, '/', $path) : '';
+            }
+            if ($path[0] === '/' && preg_match('#^[a-z]:#i', $cwd)) {
+                $path = substr($cwd, 0, 2) . $path;
+            }
+            $isAbsolute = (bool) preg_match('#^[a-z]:/#i', $path);
+        } else {
+            $isAbsolute = $path[0] === '/';
+        }
+        if (!$isAbsolute) {
+            $path = rtrim($cwd, '/') . '/' . $path;
+        }
+        $parts = [];
+        foreach (explode('/', $path) as $part) {
+            if ($part === '' || $part === '.') {
+                continue;
+            }
+            if ($part === '..') {
+                if ($parts === []) {
+                    return '';
+                }
+                array_pop($parts);
+            } else {
+                $parts[] = $part;
+            }
+        }
+        $absolute = '/' . implode('/', $parts);
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            $absolute = substr($absolute, 1);
+        }
+
+        return is_dir($absolute) ? $absolute : '';
     }
 }

@@ -34,7 +34,7 @@ class PermissionKeyCategory extends DynamicItem
      */
     public function parseManual(\Gettext\Translations $translations, $concrete5version)
     {
-        $pkcNameMap = array(
+        $pkcNameMap = [
             'page' => 'Page',
             'single_page' => 'Single page',
             'stack' => 'Stack',
@@ -49,7 +49,7 @@ class PermissionKeyCategory extends DynamicItem
             'sitemap' => 'Site map',
             'marketplace_newsflow' => 'MarketPlace newsflow',
             'basic_workflow' => 'Basic workflow',
-        );
+        ];
         if (version_compare($concrete5version, '5.7') < 0) {
             $pkcClass = '\PermissionKeyCategory';
         } else {
@@ -58,7 +58,7 @@ class PermissionKeyCategory extends DynamicItem
         if (class_exists($pkcClass, true) && method_exists($pkcClass, 'getList')) {
             foreach (call_user_func($pkcClass . '::getList') as $pkc) {
                 $pkcHandle = $pkc->getPermissionKeyCategoryHandle();
-                $this->addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : ucwords(str_replace(array('_', '-', '/'), ' ', $pkcHandle)));
+                $this->addTranslation($translations, isset($pkcNameMap[$pkcHandle]) ? $pkcNameMap[$pkcHandle] : ucwords(str_replace(['_', '-', '/'], ' ', $pkcHandle)));
             }
         }
     }

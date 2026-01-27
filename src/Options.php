@@ -50,7 +50,7 @@ class Options
         }
         if ($result === '') {
             if (isset($_ENV) && is_array($_ENV)) {
-                foreach (array('TMP', 'TMPDIR', 'TEMP') as $k) {
+                foreach (['TMP', 'TMPDIR', 'TEMP'] as $k) {
                     if (isset($_ENV[$k])) {
                         $result = $check($_ENV[$k]);
                         if ($result !== '') {

@@ -36,8 +36,8 @@ class Php extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $phpFiles = array();
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        $phpFiles = [];
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -105,6 +105,7 @@ class Php extends \C5TL\Parser
     protected static function parseDirectoryDo_xgettext($rootDirectory, $phpFiles)
     {
         try {
+            $additionalOptions = static::getXgettextAdditionalOptions();
             $tempDirectory = \C5TL\Options::getTemporaryDirectory();
             $tempFileList = @tempnam($tempDirectory, 'cil');
             if ($tempFileList === false) {
@@ -140,9 +141,12 @@ class Php extends \C5TL\Parser
             $line .= ' --keyword=tc:1c,2'; // Look for the first argument of the "tc" function for extracting translation context, and the second argument is the translatable text in singular form.
             $line .= ' --no-escape'; // Do not use C escapes in output
             $line .= ' --add-location'; // Generate '#: filename:line' lines
+            if ($additionalOptions !== '') {
+                $line .= " {$additionalOptions}";
+            }
             $line .= ' --files-from=' . escapeshellarg($tempFileList); // Get list of input files from file
             $line .= ' 2>&1';
-            $output = array();
+            $output = [];
             $rc = null;
             @exec($line, $output, $rc);
             @unlink($tempFileList);
@@ -151,7 +155,7 @@ class Php extends \C5TL\Parser
                 $rc = -1;
             }
             if (!is_array($output)) {
-                $output = array();
+                $output = [];
             }
             if ($rc !== 0) {
                 throw new \Exception('xgettext failed: ' . implode("\n", $output));
@@ -217,6 +221,29 @@ class Php extends \C5TL\Parser
         }
 
         return $newTranslations;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getXgettextAdditionalOptions()
+    {
+        static $result;
+        if ($result !== null) {
+            return $result;
+        }
+        $result = '';
+        $output = [];
+        $rc = null;
+        @exec('xgettext --help 2>&1', $output, $rc);
+        if ($rc === 0) {
+            $output = implode(" ", $output);
+            if (strpos($output, ' --no-git ') !== false) {
+                $result .= ' --no-git';
+            }
+        }
+
+        return $result;
     }
 
     protected function parseDirectoryFiles(string $rootDirectory, array $phpFiles)

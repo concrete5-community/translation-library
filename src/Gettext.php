@@ -16,7 +16,7 @@ class Gettext
      */
     public static function commandIsAvailable($command)
     {
-        static $cache = array();
+        static $cache = [];
         if (!isset($cache[$command])) {
             $cache[$command] = false;
             $safeMode = @ini_get('safe_mode');
@@ -24,7 +24,7 @@ class Gettext
                 if (function_exists('exec')) {
                     if (!in_array('exec', array_map('trim', explode(',', strtolower(@ini_get('disable_functions')))), true)) {
                         $rc = 1;
-                        $output = array();
+                        $output = [];
                         @exec($command . ' --version 2>&1', $output, $rc);
                         if ($rc === 0) {
                             $cache[$command] = true;

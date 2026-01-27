@@ -34,15 +34,15 @@ class BlockTemplates extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $templateHandles = array();
+        $templateHandles = [];
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         $matches = null;
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $shownChild = ($child === '') ? rtrim($prefix, '/') : ($prefix . $child);
             $fullpath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)blocks/\w+/(?:templates|composer)/(\w+)$%', $fullpath, $matches)) {
                 if (!isset($templateHandles[$matches[1]])) {
-                    $templateHandles[$matches[1]] = array();
+                    $templateHandles[$matches[1]] = [];
                 }
                 $templateHandles[$matches[1]][] = $shownChild;
             } elseif (preg_match('%(^|/)blocks/\w+/(?:templates|composer)$%', $fullpath)) {
@@ -54,7 +54,7 @@ class BlockTemplates extends \C5TL\Parser
                     if ($file[0] !== '.') {
                         if (preg_match('/^(.*)\.php$/', $file, $matches) && is_file("$fullpath/$file")) {
                             if (!isset($templateHandles[$matches[1]])) {
-                                $templateHandles[$matches[1]] = array();
+                                $templateHandles[$matches[1]] = [];
                             }
                             $templateHandles[$matches[1]][] = $shownChild . "/$file";
                         }
@@ -63,7 +63,7 @@ class BlockTemplates extends \C5TL\Parser
             }
         }
         foreach ($templateHandles as $templateHandle => $references) {
-            $translation = $translations->insert('TemplateFileName', ucwords(str_replace(array('_', '-', '/'), ' ', $templateHandle)));
+            $translation = $translations->insert('TemplateFileName', ucwords(str_replace(['_', '-', '/'], ' ', $templateHandle)));
             foreach ($references as $reference) {
                 $translation->addReference($reference);
             }
