@@ -19,23 +19,23 @@ class DynamicParserTest extends TestCase
 
     public static function provideRequiredParserHandles()
     {
-        return array(
-            array('area'),
-            array('attribute_key'),
-            array('attribute_key_category'),
-            array('attribute_set'),
-            array('attribute_type'),
-            array('authentication_type'),
-            array('express_form_field_set'),
-            array('group'),
-            array('group_set'),
-            array('job_set'),
-            array('permission_access_entity_type'),
-            array('permission_key'),
-            array('permission_key_category'),
-            array('select_attribute_value'),
-            array('tree'),
-        );
+        return [
+            ['area'],
+            ['attribute_key'],
+            ['attribute_key_category'],
+            ['attribute_set'],
+            ['attribute_type'],
+            ['authentication_type'],
+            ['express_form_field_set'],
+            ['group'],
+            ['group_set'],
+            ['job_set'],
+            ['permission_access_entity_type'],
+            ['permission_key'],
+            ['permission_key_category'],
+            ['select_attribute_value'],
+            ['tree'],
+        ];
     }
 
     /**

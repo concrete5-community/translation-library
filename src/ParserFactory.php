@@ -10,7 +10,7 @@ class ParserFactory
     /**
      * @var \C5TL\Parser[]
      */
-    private $parsers = array();
+    private $parsers = [];
 
     public function __construct()
     {
@@ -51,13 +51,20 @@ class ParserFactory
      */
     private function getDefaultParsers()
     {
-        $result = array();
+        $result = [];
         $dir = __DIR__ . '/Parser';
         if (is_dir($dir) && is_readable($dir)) {
             $matches = null;
             foreach (scandir($dir) as $item) {
                 if (($item[0] !== '.') && preg_match('/^(.+)\.php$/i', $item, $matches)) {
                     $fqClassName = '\\' . __NAMESPACE__ . '\\Parser\\' . $matches[1];
+
+                    if (method_exists($fqClassName, 'isSupported')) {
+                        if (!$fqClassName::isSupported()) {
+                            continue;
+                        }
+                    }
+
                     $result[] = new $fqClassName();
                 }
             }

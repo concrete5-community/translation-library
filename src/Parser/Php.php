@@ -7,6 +7,8 @@ namespace C5TL\Parser;
  */
 class Php extends \C5TL\Parser
 {
+    protected $fileRegex = '/^(.*)\.php$/i';
+
     /**
      * {@inheritdoc}
      *
@@ -34,8 +36,8 @@ class Php extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $phpFiles = array();
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        $phpFiles = [];
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
             if ($contents === false) {
@@ -44,18 +46,14 @@ class Php extends \C5TL\Parser
             foreach ($contents as $file) {
                 if ($file[0] !== '.') {
                     $fullFilePath = "$fullDirectoryPath/$file";
-                    if (preg_match('/^(.*)\.php$/i', $file) && is_file($fullFilePath)) {
+                    if (preg_match($this->fileRegex, $file) && is_file($fullFilePath)) {
                         $phpFiles[] = ($child === '') ? $file : "$child/$file";
                     }
                 }
             }
         }
         if (count($phpFiles) > 0) {
-            if (\C5TL\Gettext::commandIsAvailable('xgettext')) {
-                $newTranslations = static::parseDirectoryDo_xgettext($rootDirectory, $phpFiles);
-            } else {
-                $newTranslations = static::parseDirectoryDo_php($rootDirectory, $phpFiles);
-            }
+            $newTranslations = $this->parseDirectoryFiles($rootDirectory, $phpFiles);
             if ($newTranslations->count() > 0) {
                 if ($relativePath !== '') {
                     foreach ($newTranslations as $newTranslation) {
@@ -148,7 +146,7 @@ class Php extends \C5TL\Parser
             }
             $line .= ' --files-from=' . escapeshellarg($tempFileList); // Get list of input files from file
             $line .= ' 2>&1';
-            $output = array();
+            $output = [];
             $rc = null;
             @exec($line, $output, $rc);
             @unlink($tempFileList);
@@ -157,7 +155,7 @@ class Php extends \C5TL\Parser
                 $rc = -1;
             }
             if (!is_array($output)) {
-                $output = array();
+                $output = [];
             }
             if ($rc !== 0) {
                 throw new \Exception('xgettext failed: ' . implode("\n", $output));
@@ -235,7 +233,7 @@ class Php extends \C5TL\Parser
             return $result;
         }
         $result = '';
-        $output = array();
+        $output = [];
         $rc = null;
         @exec('xgettext --help 2>&1', $output, $rc);
         if ($rc === 0) {
@@ -246,5 +244,14 @@ class Php extends \C5TL\Parser
         }
 
         return $result;
+    }
+
+    protected function parseDirectoryFiles(string $rootDirectory, array $phpFiles)
+    {
+        if (\C5TL\Gettext::commandIsAvailable('xgettext')) {
+            return static::parseDirectoryDo_xgettext($rootDirectory, $phpFiles);
+        }
+
+        return static::parseDirectoryDo_php($rootDirectory, $phpFiles);
     }
 }

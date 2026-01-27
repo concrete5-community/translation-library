@@ -58,13 +58,13 @@ class ConfigFiles extends \C5TL\Parser
                         }
                     }
                 }
-                $directoryAlternatives = array('application/config/generated_overrides', 'application/config', "{$corePrefix}/config");
+                $directoryAlternatives = ['application/config/generated_overrides', 'application/config', "{$corePrefix}/config"];
                 break;
             case 'application':
-                $directoryAlternatives = array('config/generated_overrides', 'config');
+                $directoryAlternatives = ['config/generated_overrides', 'config'];
                 break;
             case 'concrete':
-                $directoryAlternatives = array('config');
+                $directoryAlternatives = ['config'];
                 break;
             default:
                 return;
@@ -148,11 +148,11 @@ class ConfigFiles extends \C5TL\Parser
      */
     private function getTranslatableKeys()
     {
-        return array(
+        return [
             'concrete.user.deactivation.message' => '',
             'concrete.user.username.allowed_characters.requirement_string' => '',
             'concrete.user.username.allowed_characters.error_string' => '',
-        );
+        ];
     }
 
     /**

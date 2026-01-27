@@ -34,10 +34,10 @@ class ThemePresets extends \C5TL\Parser
      */
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
-        $themesPresets = array();
+        $themesPresets = [];
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
         $matches = null;
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $presetsAbsDirectory = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             if (preg_match('%(?:^|/)themes/\w+/css/presets$%', $presetsAbsDirectory, $matches)) {
                 $dirList = @scandir($presetsAbsDirectory);
@@ -62,7 +62,7 @@ class ThemePresets extends \C5TL\Parser
                                 },
                                 $content
                             );
-                            foreach (array("'", '"') as $quote) {
+                            foreach (["'", '"'] as $quote) {
                                 if (preg_match('%(?:^|\\n|;)[ \\t]*@preset-name:\\s*' . $quote . '([^' . $quote . ']*)' . $quote . '\\s*(?:;|$)%s', $content, $matches)) {
                                     $presetName = $matches[1];
                                     $presetLine = null;
@@ -71,9 +71,9 @@ class ThemePresets extends \C5TL\Parser
                                         $presetLine = substr_count(substr($content, 0, $p), "\n") + 1;
                                     }
                                     if (!isset($themesPresets[$presetName])) {
-                                        $themesPresets[$presetName] = array();
+                                        $themesPresets[$presetName] = [];
                                     }
-                                    $themesPresets[$presetName][] = array($shownChild . "/$file", $presetLine);
+                                    $themesPresets[$presetName][] = [$shownChild . "/$file", $presetLine];
                                     break;
                                 }
                             }
@@ -83,7 +83,7 @@ class ThemePresets extends \C5TL\Parser
             }
         }
         foreach ($themesPresets as $themesPreset => $references) {
-            $translation = $translations->insert('PresetName', ucwords(str_replace(array('_', '-', '/'), ' ', $themesPreset)));
+            $translation = $translations->insert('PresetName', ucwords(str_replace(['_', '-', '/'], ' ', $themesPreset)));
             foreach ($references as $reference) {
                 $translation->addReference($reference[0], $reference[1]);
             }

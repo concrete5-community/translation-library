@@ -9,7 +9,7 @@ use C5TL\Parser\DynamicItem\DynamicItem;
  */
 class Dynamic extends \C5TL\Parser
 {
-    private $subParsers = array();
+    private $subParsers = [];
 
     public function __construct()
     {
@@ -87,7 +87,7 @@ class Dynamic extends \C5TL\Parser
      */
     private function getDefaultSubParsers()
     {
-        $result = array();
+        $result = [];
         $dir = __DIR__ . '/DynamicItem';
         if (is_dir($dir) && is_readable($dir)) {
             $matches = null;

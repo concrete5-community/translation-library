@@ -35,7 +35,7 @@ class Cif extends \C5TL\Parser
     protected function parseDirectoryDo(\Gettext\Translations $translations, $rootDirectory, $relativePath, $subParsersFilter, $exclude3rdParty)
     {
         $prefix = ($relativePath === '') ? '' : "$relativePath/";
-        foreach (array_merge(array(''), $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
+        foreach (array_merge([''], $this->getDirectoryStructure($rootDirectory, $exclude3rdParty)) as $child) {
             $shownDirectory = $prefix . (($child === '') ? '' : "$child/");
             $fullDirectoryPath = ($child === '') ? $rootDirectory : "$rootDirectory/$child";
             $contents = @scandir($fullDirectoryPath);
@@ -222,11 +222,11 @@ class Cif extends \C5TL\Parser
                 break;
             case '/concrete5-cif/pages/page/area/block/data/record':
                 // Skip this node and *almost* all its children
-                $childnodesLimit = array('title');
+                $childnodesLimit = ['title'];
                 break;
             case '/concrete5-cif/pagefeeds/feed':
                 // Skip this node and *almost* all its children
-                $childnodesLimit = array('title', 'description');
+                $childnodesLimit = ['title', 'description'];
                 break;
             case '/concrete5-cif/area/blocks':
             case '/concrete5-cif/attributecategories/category/attributetypes':

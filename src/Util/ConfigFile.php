@@ -16,7 +16,7 @@ class ConfigFile
      * // ccm-translation-library: skip-file
      * </pre></code>
      */
-    const FLAG_SKIP_FILE = 'skip-file';
+    public const FLAG_SKIP_FILE = 'skip-file';
 
     /**
      * The file contents.
@@ -93,7 +93,7 @@ class ConfigFile
         if ($contents === false) {
             throw new Exception('Failed to read file ' . $filename);
         }
-        $contents = str_replace(array("\r\n", "\r"), "\n", $contents);
+        $contents = str_replace(["\r\n", "\r"], "\n", $contents);
         $contents = preg_replace('/([a-z_\\\\]+)::class\b/i', "'\\1'", $contents);
         $this->contents = $contents;
     }
@@ -142,9 +142,9 @@ class ConfigFile
         $errorReporting = @error_reporting();
         error_reporting($errorReporting & ~E_NOTICE);
         $exception = null;
-        $autoloader = array($this, 'evaluateAutoloader');
+        $autoloader = [$this, 'evaluateAutoloader'];
         spl_autoload_register($autoloader, true, false);
-        $prevErrorHandler = set_error_handler(array($this, 'evaluateHandleError'));
+        $prevErrorHandler = set_error_handler([$this, 'evaluateHandleError']);
         $this->lastEvaluateError = null;
         try {
             $code = include $filename;
@@ -163,7 +163,7 @@ class ConfigFile
         if (!is_array($code) && $this->lastEvaluateError !== null) {
             throw new Exception('Failed to read configuration file: ' . $this->lastEvaluateError[1]);
         }
-        $this->array = is_array($code) ? $code : array();
+        $this->array = is_array($code) ? $code : [];
     }
 
     /**
@@ -184,14 +184,15 @@ class ConfigFile
     protected function getFlags()
     {
         if ($this->flags === null) {
-            $flags = array();
-            set_error_handler(function () {}, -1);
+            $flags = [];
+            set_error_handler(function () {
+            }, -1);
             $tokens = token_get_all($this->contents);
             restore_error_handler();
             if (is_array($tokens)) {
                 $matches = null;
                 foreach ($tokens as $token) {
-                    if (!is_array($token) || !in_array($token[0], array(T_COMMENT, T_DOC_COMMENT), true)) {
+                    if (!is_array($token) || !in_array($token[0], [T_COMMENT, T_DOC_COMMENT], true)) {
                         continue;
                     }
                     if (!preg_match('/\bccm-translation-library\s*:([\s\w;,\-]+)/', $token[1], $matches)) {
